@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -23,7 +24,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img
-              src="https://swastikeducationcampus.in/img/logo.png"
+              src={logo}
               alt="Swastik Education Campus Logo"
               className="h-14 w-auto"
             />
