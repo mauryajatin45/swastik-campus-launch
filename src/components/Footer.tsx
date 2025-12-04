@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const Footer = () => {
@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* About */}
-          <div>
+          <div className="animate-fade-in">
             <img
               src={logo}
               alt="Swastik Education Campus"
@@ -20,65 +20,69 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="animate-fade-in-delay-1">
             <h4 className="font-serif text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
-                <Link to="/about" className="text-secondary-foreground/70 hover:text-secondary-foreground transition-colors text-sm">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/academics" className="text-secondary-foreground/70 hover:text-secondary-foreground transition-colors text-sm">
-                  Academics
-                </Link>
-              </li>
-              <li>
-                <Link to="/admissions" className="text-secondary-foreground/70 hover:text-secondary-foreground transition-colors text-sm">
-                  Admissions
-                </Link>
-              </li>
-              <li>
-                <Link to="/news" className="text-secondary-foreground/70 hover:text-secondary-foreground transition-colors text-sm">
-                  News & Events
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-secondary-foreground/70 hover:text-secondary-foreground transition-colors text-sm">
-                  Contact
-                </Link>
-              </li>
+              {[
+                { name: "About Us", path: "/about" },
+                { name: "Academics", path: "/academics" },
+                { name: "Admissions", path: "/admissions" },
+                { name: "News & Events", path: "/news" },
+                { name: "Contact", path: "/contact" },
+              ].map((link) => (
+                <li key={link.path}>
+                  <Link 
+                    to={link.path} 
+                    className="text-secondary-foreground/70 hover:text-secondary-foreground transition-colors text-sm inline-flex items-center gap-1 group"
+                  >
+                    <ArrowRight size={12} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+                    <span>{link.name}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact Info */}
-          <div>
+          <div className="animate-fade-in-delay-2">
             <h4 className="font-serif text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-sm text-secondary-foreground/80">
-                <MapPin size={18} className="flex-shrink-0 mt-0.5" />
-                <span>Swastik Education Campus, Narendra Modi Stadium Road, Motera, Ahmedabad</span>
+              <li className="flex items-start gap-3 text-sm text-secondary-foreground/80 group">
+                <MapPin size={18} className="flex-shrink-0 mt-0.5 text-accent" />
+                <span className="group-hover:text-secondary-foreground transition-colors">
+                  Swastik Education Campus, Narendra Modi Stadium Road, Motera, Ahmedabad
+                </span>
               </li>
-              <li className="flex items-center gap-3 text-sm text-secondary-foreground/80">
-                <Phone size={18} />
-                <span>7096 25 50 75 | 079-27574160</span>
+              <li>
+                <a 
+                  href="tel:+917096255075" 
+                  className="flex items-center gap-3 text-sm text-secondary-foreground/80 hover:text-secondary-foreground transition-colors"
+                >
+                  <Phone size={18} className="text-accent" />
+                  <span>7096 25 50 75 | 079-27574160</span>
+                </a>
               </li>
-              <li className="flex items-center gap-3 text-sm text-secondary-foreground/80">
-                <Mail size={18} />
-                <span>swastikmotera@gmail.com</span>
+              <li>
+                <a 
+                  href="mailto:swastikmotera@gmail.com" 
+                  className="flex items-center gap-3 text-sm text-secondary-foreground/80 hover:text-secondary-foreground transition-colors"
+                >
+                  <Mail size={18} className="text-accent" />
+                  <span>swastikmotera@gmail.com</span>
+                </a>
               </li>
             </ul>
           </div>
 
           {/* Social Links */}
-          <div>
+          <div className="animate-fade-in-delay-3">
             <h4 className="font-serif text-lg font-semibold mb-4">Follow Us</h4>
             <div className="flex gap-4">
               <a
                 href="https://www.instagram.com/swastikcampus"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-secondary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors"
+                className="w-10 h-10 rounded-full bg-secondary-foreground/10 flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300"
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
@@ -87,14 +91,14 @@ const Footer = () => {
                 href="https://wa.me/917096255075"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-secondary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors"
+                className="w-10 h-10 rounded-full bg-secondary-foreground/10 flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300"
                 aria-label="WhatsApp"
               >
                 <Phone size={18} />
               </a>
               <a
                 href="mailto:swastikmotera@gmail.com"
-                className="w-10 h-10 rounded-full bg-secondary-foreground/10 flex items-center justify-center hover:bg-primary transition-colors"
+                className="w-10 h-10 rounded-full bg-secondary-foreground/10 flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300"
                 aria-label="Email"
               >
                 <Mail size={18} />
