@@ -360,4 +360,23 @@
   .wave-bottom {
     clip-path: ellipse(120% 100% at 50% 0%);
   }
+
+  /* Auto-scroll animation for events */
+  @keyframes scrollUp {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+
+  .animate-scroll-up {
+    animation: scrollUp 20s linear infinite;
+  }
+
+  .animate-scroll-up:hover,
+  .pause-animation:hover {
+    animation-play-state: paused;
+  }
 }

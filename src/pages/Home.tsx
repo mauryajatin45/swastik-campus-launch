@@ -5,6 +5,7 @@ import {
   StatisticsSection,
   PrincipalMessageSection,
   ProgramsSection,
+  NewsUpdatesSection,
   CoreValuesSection,
   TestimonialsSection,
   FAQSection,
@@ -21,6 +22,7 @@ const Home = () => {
       <StatisticsSection />
       <PrincipalMessageSection />
       <ProgramsSection />
+      <NewsUpdatesSection />
       <CoreValuesSection />
       <TestimonialsSection />
       <FAQSection />

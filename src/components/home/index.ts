@@ -5,6 +5,7 @@ export { default as WhyChooseUsSection } from './WhyChooseUsSection';
 export { default as StatisticsSection } from './StatisticsSection';
 export { default as PrincipalMessageSection } from './PrincipalMessageSection';
 export { default as ProgramsSection } from './ProgramsSection';
+export { default as NewsUpdatesSection } from './NewsUpdatesSection';
 export { default as CoreValuesSection } from './CoreValuesSection';
 export { default as TestimonialsSection } from './TestimonialsSection';
 export { default as FAQSection } from './FAQSection';
