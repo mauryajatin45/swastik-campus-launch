@@ -1,53 +1,55 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import logo from "@/assets/logo.png";
 
-const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Academics", path: "/academics" },
-  { name: "Admissions", path: "/admissions" },
-  { name: "News", path: "/news" },
-  { name: "Gallery", path: "/gallery" },
-  { name: "Contact", path: "/contact" },
-];
-
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/about", label: "About" },
+    { path: "/academics", label: "Academics" },
+    { path: "/admissions", label: "Admissions" },
+    { path: "/news", label: "News" },
+    { path: "/gallery", label: "Gallery" },
+    { path: "/contact", label: "Contact" },
+  ];
+
+  const isActive = (path: string) => location.pathname === path;
+
   return (
-    <header 
+    <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? "bg-background/98 backdrop-blur-md shadow-sm" 
-          : "bg-background/95 backdrop-blur-sm"
-      } border-b border-border`}
+        isScrolled
+          ? "bg-white shadow-md py-2"
+          : "bg-white/95 backdrop-blur-sm py-3"
+      }`}
     >
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <img
               src={logo}
-              alt="Swastik Education Campus Logo"
+              alt="Swastik Education Campus"
               className="h-14 w-auto transition-transform duration-300 group-hover:scale-105"
             />
             <div className="hidden sm:block">
-              <h1 className="font-serif text-secondary text-lg font-semibold leading-tight">
-                Swastik Education Campus
+              <h1 className="font-heading font-bold text-navy text-lg leading-tight">
+                Swastik Education
               </h1>
-              <p className="text-muted-foreground text-xs">Motera, Ahmedabad</p>
+              <p className="text-xs text-muted-foreground">Campus, Motera</p>
             </div>
           </Link>
 
@@ -57,47 +59,74 @@ const Header = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`nav-link ${location.pathname === link.path ? "active text-primary" : ""}`}
+                className={`nav-link ${isActive(link.path) ? "text-sky-blue active" : ""}`}
               >
-                {link.name}
+                {link.label}
               </Link>
             ))}
           </nav>
 
+          {/* CTA Buttons */}
+          <div className="hidden lg:flex items-center gap-3">
+            <a
+              href="tel:+917096255075"
+              className="flex items-center gap-2 text-red-accent font-semibold text-sm hover:text-red-accent/80 transition-colors"
+            >
+              <Phone className="h-4 w-4" />
+              <span>Call Us</span>
+            </a>
+            <Link to="/admissions" className="btn-sky">
+              Book a Tour
+            </Link>
+          </div>
+
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 text-secondary hover:bg-muted rounded-lg transition-colors"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden p-2 text-navy hover:text-sky-blue transition-colors"
             aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
-        <div 
-          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <nav className="py-4 border-t border-border">
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link, index) => (
+        {isMenuOpen && (
+          <nav className="lg:hidden mt-4 pb-4 border-t border-border pt-4 animate-fade-in">
+            <div className="flex flex-col gap-3">
+              {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`nav-link py-3 px-4 rounded-lg hover:bg-muted transition-all duration-200 ${
-                    location.pathname === link.path ? "active text-primary bg-muted" : ""
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`py-2 px-3 rounded-lg transition-colors ${
+                    isActive(link.path)
+                      ? "bg-pale-blue text-sky-blue font-medium"
+                      : "text-navy hover:bg-pale-gray"
                   }`}
-                  onClick={() => setIsOpen(false)}
-                  style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  {link.name}
+                  {link.label}
                 </Link>
               ))}
+              <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-border">
+                <a
+                  href="tel:+917096255075"
+                  className="flex items-center gap-2 text-red-accent font-semibold py-2"
+                >
+                  <Phone className="h-4 w-4" />
+                  <span>7096 25 50 75</span>
+                </a>
+                <Link
+                  to="/admissions"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="btn-sky text-center justify-center"
+                >
+                  Book a Tour
+                </Link>
+              </div>
             </div>
           </nav>
-        </div>
+        )}
       </div>
     </header>
   );
