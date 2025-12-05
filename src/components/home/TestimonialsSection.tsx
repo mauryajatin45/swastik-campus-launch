@@ -126,11 +126,11 @@ const TestimonialsSection = () => {
                 {/* Render slides - each slide contains 3 cards */}
                 {Array.from({ length: totalSlides }).map((_, slideIndex) => (
                   <div key={slideIndex} className="w-full flex-shrink-0">
-                    <div className="grid md:grid-cols-3 gap-6 px-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-2">
                       {testimonials.slice(slideIndex * 3, slideIndex * 3 + 3).map((testimonial, cardIndex) => (
                         <div
                           key={cardIndex}
-                          className="bg-white rounded-2xl p-6 shadow-lg border border-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group"
+                          className={`bg-white rounded-2xl p-6 shadow-lg border border-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group ${cardIndex > 0 ? 'hidden md:block' : ''}`}
                         >
                           {/* Quote Icon */}
                           <Quote className="absolute top-4 right-4 h-8 w-8 text-sky-blue/20 group-hover:text-sky-blue/40 transition-colors" />

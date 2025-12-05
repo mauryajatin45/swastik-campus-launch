@@ -51,6 +51,9 @@ const PrincipalMessageSection = () => {
         </ScrollRevealSection>
       </div>
 
+      {/* Spacer for padding bottom */}
+      <div className="h-8"></div>
+
       {/* Wave Shape Bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-16 bg-white wave-top" />
     </section>

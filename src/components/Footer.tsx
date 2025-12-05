@@ -33,15 +33,15 @@ const Footer = () => {
               <h3 className="font-heading font-bold text-xl mb-1">Stay Connected</h3>
               <p className="text-white/70">Subscribe to our newsletter for updates and news</p>
             </div>
-            <form className="flex gap-2 w-full md:w-auto" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex flex-col sm:flex-row gap-2 w-full md:w-auto" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="px-4 py-3 rounded-full bg-white text-navy flex-1 md:w-72 focus:outline-none focus:ring-2 focus:ring-sky-blue"
+                className="px-4 py-3 rounded-full bg-white text-navy w-full sm:flex-1 md:w-72 focus:outline-none focus:ring-2 focus:ring-sky-blue text-sm"
               />
-              <button type="submit" className="btn-green">
+              <button type="submit" className="btn-green whitespace-nowrap text-sm px-4 py-3">
                 Subscribe
               </button>
             </form>

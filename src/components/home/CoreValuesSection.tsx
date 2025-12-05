@@ -52,7 +52,7 @@ const CoreValuesSection = () => {
                       <value.icon className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="font-heading font-bold text-white text-base md:text-lg mb-2">{value.label}</h3>
-                    <p className="text-white/50 text-xs md:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <p className="text-white/50 text-xs md:text-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 md:translate-y-2 md:group-hover:translate-y-0">
                       {value.description}
                     </p>
                   </div>
@@ -80,7 +80,7 @@ const CoreValuesSection = () => {
                       <value.icon className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="font-heading font-bold text-white text-base md:text-lg mb-2">{value.label}</h3>
-                    <p className="text-white/50 text-xs md:text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                    <p className="text-white/50 text-xs md:text-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 md:translate-y-2 md:group-hover:translate-y-0">
                       {value.description}
                     </p>
                   </div>
