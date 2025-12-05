@@ -166,9 +166,9 @@ const Academics = () => {
         <div className="container mx-auto px-4 relative z-10 py-20">
           <ScrollRevealSection>
             <div className="max-w-3xl">
-              <span className="inline-block bg-white/10 backdrop-blur-sm text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-white/20">
+              {/* <span className="inline-block bg-white/10 backdrop-blur-sm text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-white/20">
                 Academics
-              </span>
+              </span> */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6">
                 Programs & <span className="text-sky-blue">Curriculum</span>
               </h1>
@@ -242,19 +242,20 @@ const Academics = () => {
             </div>
 
             {/* Level Tabs */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
+            <div className="flex justify-center gap-2 md:gap-4 mb-12">
               {levels.map((level) => (
                 <button
                   key={level.id}
                   onClick={() => setActiveLevel(level.id)}
-                  className={`px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center gap-3 ${
+                  className={`px-3 md:px-8 py-2 md:py-4 rounded-xl md:rounded-2xl font-semibold transition-all duration-300 flex items-center gap-1 md:gap-3 text-xs md:text-base ${
                     activeLevel === level.id
                       ? `bg-gradient-to-r ${level.color} text-white shadow-lg scale-105`
                       : "bg-pale-gray text-navy hover:bg-pale-blue"
                   }`}
                 >
-                  <level.icon className="h-5 w-5" />
-                  <span>{level.title}</span>
+                  <level.icon className="h-4 w-4 md:h-5 md:w-5" />
+                  <span className="hidden sm:inline">{level.title}</span>
+                  <span className="sm:hidden">{level.title.split(' ')[0]}</span>
                 </button>
               ))}
             </div>

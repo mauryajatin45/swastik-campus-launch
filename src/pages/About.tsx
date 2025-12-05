@@ -134,12 +134,12 @@ const About = () => {
         <div className="absolute top-20 right-20 w-64 h-64 bg-sky-blue/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 left-10 w-80 h-80 bg-orange/10 rounded-full blur-3xl"></div>
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 py-8 md:py-0 relative z-10">
           <ScrollRevealSection>
             <div className="max-w-3xl">
-              <span className="inline-block bg-white/10 backdrop-blur-sm text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-white/20">
+              {/* <span className="inline-block bg-white/10 backdrop-blur-sm text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-white/20">
                 About Swastik Education Campus
-              </span>
+              </span> */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6">
                 Shaping Futures, <span className="text-sky-blue">Building Dreams</span>
               </h1>
@@ -164,7 +164,7 @@ const About = () => {
       </section>
 
       {/* Statistics Banner */}
-      <section className="py-12 bg-white relative -mt-6 mx-4 lg:mx-8 rounded-2xl shadow-xl z-20">
+      <section className="py-12 bg-white relative mt-4 md:-mt-6 mx-4 lg:mx-8 rounded-2xl shadow-xl z-20">
         <div ref={statsRef} className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
@@ -266,11 +266,11 @@ const About = () => {
             <div className="max-w-4xl mx-auto">
               <div className="relative">
                 {/* Timeline line */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-sky-blue via-green to-orange rounded-full"></div>
+                <div className="absolute left-[7px] md:left-1/2 md:-translate-x-1/2 h-full w-1 bg-gradient-to-b from-sky-blue via-green to-orange rounded-full"></div>
                 
                 {milestones.map((milestone, index) => (
-                  <div key={index} className={`relative flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                    <div className={`w-5/12 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
+                  <div key={index} className={`relative flex items-center mb-12 justify-end ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}>
+                    <div className={`w-10/12 md:w-5/12 pl-0 text-left ${index % 2 === 0 ? 'md:pr-8 md:text-right md:pl-0' : 'md:pl-8 md:text-left'}`}>
                       <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
                         <span className="text-sky-blue font-bold text-lg">{milestone.year}</span>
                         <h3 className="font-heading font-bold text-navy text-xl mt-2 mb-2">{milestone.title}</h3>
@@ -278,7 +278,7 @@ const About = () => {
                       </div>
                     </div>
                     {/* Center dot */}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 bg-white border-4 border-sky-blue rounded-full z-10"></div>
+                    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-4 h-4 bg-white border-4 border-sky-blue rounded-full z-10"></div>
                   </div>
                 ))}
               </div>
@@ -361,16 +361,16 @@ const About = () => {
         <div className="container mx-auto px-4">
           <ScrollRevealSection>
             <div className="text-center mb-16">
-              <span className="inline-block bg-pale-blue text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              {/* <span className="inline-block bg-pale-blue text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-4">
                 What We Stand For
-              </span>
+              </span> */}
               <h2 className="section-title mb-4">Our Core Values</h2>
               <p className="section-subtitle mx-auto">
                 The principles that guide our educational philosophy
               </p>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               {[
                 { icon: Heart, title: "Compassion", description: "Nurturing empathy in all", color: "from-red-accent to-orange" },
                 { icon: Star, title: "Excellence", description: "Striving for the best", color: "from-sky-blue to-green" },

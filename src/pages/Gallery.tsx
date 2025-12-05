@@ -136,10 +136,10 @@ const Gallery = () => {
         <div className="container mx-auto px-4 relative z-10 py-20">
           <ScrollRevealSection>
             <div className="max-w-3xl text-center mx-auto">
-              <span className="inline-block bg-white/10 backdrop-blur-sm text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-white/20">
+              {/* <span className="inline-block bg-white/10 backdrop-blur-sm text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-white/20">
                 <Camera className="inline h-4 w-4 mr-2" />
                 Explore Our Campus
-              </span>
+              </span> */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6">
                 Campus <span className="text-sky-blue">Gallery</span>
               </h1>
@@ -155,20 +155,20 @@ const Gallery = () => {
       {/* Category Stats */}
       <section className="py-6 bg-white border-b border-border">
         <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 md:gap-4 md:flex md:flex-wrap md:justify-center">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setActiveFilter(cat.id)}
-                className={`flex items-center gap-2 px-5 py-3 rounded-xl transition-all ${
+                className={`flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 px-2 md:px-5 py-2 md:py-3 rounded-xl transition-all text-xs md:text-base ${
                   activeFilter === cat.id
                     ? "bg-navy text-white shadow-lg"
                     : "bg-pale-gray text-navy hover:bg-pale-blue"
                 }`}
               >
-                <cat.icon className="h-5 w-5" />
-                <span className="font-medium">{cat.label}</span>
-                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                <cat.icon className="h-4 w-4 md:h-5 md:w-5" />
+                <span className="font-medium text-[10px] md:text-sm">{cat.id === "All" ? "All" : cat.label}</span>
+                <span className={`hidden md:inline text-xs px-2 py-0.5 rounded-full ${
                   activeFilter === cat.id ? "bg-white/20" : "bg-navy/10"
                 }`}>
                   {cat.count}
