@@ -3,7 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import logo from "@/assets/logo.png";
 
-const Header = () => {
+interface HeaderProps {
+  onEnquireClick?: () => void;
+}
+
+const Header = ({ onEnquireClick }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -75,6 +79,9 @@ const Header = () => {
               <Phone className="h-4 w-4" />
               <span>Call Us</span>
             </a>
+            <button onClick={onEnquireClick} className="btn-orange">
+              Enquire Now
+            </button>
             <Link to="/admissions" className="btn-sky">
               Book a Tour
             </Link>

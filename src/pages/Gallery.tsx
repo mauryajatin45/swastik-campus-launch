@@ -5,7 +5,6 @@ import {
   ChevronLeft, 
   ChevronRight, 
   ZoomIn,
-  Camera,
   Video,
   Building,
   PartyPopper,
@@ -13,9 +12,11 @@ import {
   Palette,
   ArrowRight,
   Images,
-  Play
+  Play,
+  Loader2
 } from "lucide-react";
 import heroImage from "@/assets/hero-campus.jpg";
+import { galleryAPI } from "@/services/api";
 
 // Scroll reveal hook
 const useScrollReveal = () => {
@@ -54,43 +55,57 @@ const ScrollRevealSection = ({ children, className = "" }: { children: React.Rea
   );
 };
 
-const galleryImages = [
-  { id: 1, category: "Campus", src: heroImage, title: "Main Building", featured: true },
-  { id: 2, category: "Campus", src: heroImage, title: "Modern Classrooms" },
-  { id: 3, category: "Events", src: heroImage, title: "Annual Day Performance" },
-  { id: 4, category: "Campus", src: heroImage, title: "Library" },
-  { id: 5, category: "Sports", src: heroImage, title: "Sports Day" },
-  { id: 6, category: "Campus", src: heroImage, title: "Science Laboratory" },
-  { id: 7, category: "Events", src: heroImage, title: "Graduation Ceremony" },
-  { id: 8, category: "Campus", src: heroImage, title: "Computer Lab" },
-  { id: 9, category: "Events", src: heroImage, title: "Science Exhibition" },
-  { id: 10, category: "Activities", src: heroImage, title: "Art Room" },
-  { id: 11, category: "Events", src: heroImage, title: "Cultural Program" },
-  { id: 12, category: "Sports", src: heroImage, title: "Football Ground" },
-  { id: 13, category: "Campus", src: heroImage, title: "Auditorium" },
-  { id: 14, category: "Activities", src: heroImage, title: "Music Class" },
-  { id: 15, category: "Sports", src: heroImage, title: "Basketball Court" },
-  { id: 16, category: "Events", src: heroImage, title: "Republic Day" },
-];
+interface GalleryImage {
+  id: number;
+  title: string;
+  category: string;
+  cloudinary_url: string;
+  created_at: string;
+}
 
 const categories = [
-  { id: "All", label: "All Photos", icon: Images, count: 16 },
-  { id: "Campus", label: "Campus", icon: Building, count: 6 },
-  { id: "Events", label: "Events", icon: PartyPopper, count: 5 },
-  { id: "Sports", label: "Sports", icon: Dumbbell, count: 3 },
-  { id: "Activities", label: "Activities", icon: Palette, count: 2 },
+  { id: "All", label: "All Photos", icon: Images },
+  { id: "Campus", label: "Campus", icon: Building },
+  { id: "Events", label: "Events", icon: PartyPopper },
+  { id: "Sports", label: "Sports", icon: Dumbbell },
+  { id: "Activities", label: "Activities", icon: Palette },
 ];
 
 const Gallery = () => {
-  const [selectedImage, setSelectedImage] = useState<typeof galleryImages[0] | null>(null);
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeFilter, setActiveFilter] = useState("All");
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Fetch gallery images from API
+  useEffect(() => {
+    fetchGallery();
+  }, []);
+
+  const fetchGallery = async () => {
+    setIsLoading(true);
+    try {
+      const response = await galleryAPI.getAll();
+      setGalleryImages(response.data);
+    } catch (error) {
+      console.error("Failed to fetch gallery:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const filteredImages = activeFilter === "All" 
     ? galleryImages 
     : galleryImages.filter(img => img.category === activeFilter);
 
-  const openLightbox = (image: typeof galleryImages[0]) => {
+  // Get category counts
+  const getCategoryCount = (categoryId: string) => {
+    if (categoryId === "All") return galleryImages.length;
+    return galleryImages.filter(img => img.category === categoryId).length;
+  };
+
+  const openLightbox = (image: GalleryImage) => {
     setSelectedImage(image);
     setCurrentIndex(filteredImages.findIndex(img => img.id === image.id));
   };
@@ -136,10 +151,6 @@ const Gallery = () => {
         <div className="container mx-auto px-4 relative z-10 py-20">
           <ScrollRevealSection>
             <div className="max-w-3xl text-center mx-auto">
-              {/* <span className="inline-block bg-white/10 backdrop-blur-sm text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-white/20">
-                <Camera className="inline h-4 w-4 mr-2" />
-                Explore Our Campus
-              </span> */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6">
                 Campus <span className="text-sky-blue">Gallery</span>
               </h1>
@@ -171,7 +182,7 @@ const Gallery = () => {
                 <span className={`hidden md:inline text-xs px-2 py-0.5 rounded-full ${
                   activeFilter === cat.id ? "bg-white/20" : "bg-navy/10"
                 }`}>
-                  {cat.count}
+                  {getCategoryCount(cat.id)}
                 </span>
               </button>
             ))}
@@ -183,51 +194,56 @@ const Gallery = () => {
       <section className="py-16 bg-pale-gray">
         <div className="container mx-auto px-4">
           <ScrollRevealSection>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {filteredImages.map((image, index) => (
-                <div
-                  key={image.id}
-                  className={`relative overflow-hidden rounded-2xl cursor-pointer group ${
-                    image.featured && activeFilter === "All" ? "md:col-span-2 md:row-span-2" : ""
-                  }`}
-                  onClick={() => openLightbox(image)}
-                >
-                  <div className={`aspect-square ${image.featured && activeFilter === "All" ? "md:aspect-auto md:h-full" : ""}`}>
-                    <img
-                      src={image.src}
-                      alt={image.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    {/* Zoom Icon */}
-                    <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                      <ZoomIn className="h-5 w-5 text-white" />
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center py-20">
+                <Loader2 className="h-10 w-10 text-navy animate-spin mb-4" />
+                <p className="text-muted-foreground">Loading gallery...</p>
+              </div>
+            ) : filteredImages.length === 0 ? (
+              <div className="text-center py-20">
+                <Images className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-heading font-bold text-navy mb-2">No Photos Yet</h3>
+                <p className="text-muted-foreground">Check back soon for campus photos!</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {filteredImages.map((image, index) => (
+                  <div
+                    key={image.id}
+                    className={`relative overflow-hidden rounded-2xl cursor-pointer group ${
+                      index === 0 && activeFilter === "All" ? "md:col-span-2 md:row-span-2" : ""
+                    }`}
+                    onClick={() => openLightbox(image)}
+                  >
+                    <div className={`aspect-square ${index === 0 && activeFilter === "All" ? "md:aspect-auto md:h-full" : ""}`}>
+                      <img
+                        src={image.cloudinary_url}
+                        alt={image.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
                     </div>
                     
-                    {/* Info */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <span className="inline-block bg-sky-blue text-white text-xs px-2 py-1 rounded-full mb-2">
-                        {image.category}
-                      </span>
-                      <h3 className="text-white font-heading font-bold text-lg">
-                        {image.title}
-                      </h3>
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      {/* Zoom Icon */}
+                      <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <ZoomIn className="h-5 w-5 text-white" />
+                      </div>
+                      
+                      {/* Info */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <span className="inline-block bg-sky-blue text-white text-xs px-2 py-1 rounded-full mb-2">
+                          {image.category}
+                        </span>
+                        <h3 className="text-white font-heading font-bold text-lg">
+                          {image.title}
+                        </h3>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Load More */}
-            <div className="text-center mt-12">
-              <button className="bg-white text-navy px-8 py-3 rounded-full font-semibold border-2 border-navy hover:bg-navy hover:text-white transition-colors inline-flex items-center gap-2">
-                Load More Photos
-                <Images className="h-4 w-4" />
-              </button>
-            </div>
+                ))}
+              </div>
+            )}
           </ScrollRevealSection>
         </div>
       </section>
@@ -325,7 +341,7 @@ const Gallery = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={selectedImage.src}
+              src={selectedImage.cloudinary_url}
               alt={selectedImage.title}
               className="w-full h-auto max-h-[75vh] object-contain rounded-2xl"
             />
