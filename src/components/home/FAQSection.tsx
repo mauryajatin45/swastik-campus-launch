@@ -2,13 +2,13 @@ import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { ScrollRevealSection } from "./hooks";
 
-const faqCategories = ["Admissions", "Curriculum", "Facilities", "Transport"];
+const faqCategories = ["Admissions", "Curriculum", "Facilities"];
 
 const faqs: Record<string, { q: string; a: string }[]> = {
   Admissions: [
-    { q: "What is the admission process?", a: "Our admission process includes application submission, entrance assessment, and parent interview. Contact us for detailed information." },
+    { q: "What is the admission process?", a: "Our admission process includes application submission, entrance assessment, and chid parent consulataion. Contact us for detailed information." },
     { q: "What are the age criteria for admission?", a: "Early Years: 3-6 years, Primary: 6-11 years, Secondary: 11-16 years. Age calculated as of June 1st of the academic year." },
-    { q: "Are admissions open throughout the year?", a: "We primarily admit students at the beginning of the academic year, but limited seats may be available mid-year subject to availability." },
+    { q: "Are admissions open throughout the year?", a: "No" },
   ],
   Curriculum: [
     { q: "What curriculum does the school follow?", a: "We offer both English and Gujarati medium instruction following the Gujarat State Board curriculum with enhanced learning programs." },
@@ -16,11 +16,7 @@ const faqs: Record<string, { q: string; a: string }[]> = {
   ],
   Facilities: [
     { q: "What facilities does the campus have?", a: "Our campus includes modern classrooms, science labs, computer labs, library, sports grounds, and activity rooms." },
-    { q: "Is there a cafeteria?", a: "Yes, we have a hygienic cafeteria serving nutritious meals prepared under strict quality standards." },
-  ],
-  Transport: [
-    { q: "Does the school provide transport?", a: "Yes, we have a fleet of GPS-enabled buses covering major areas of Ahmedabad with trained drivers and attendants." },
-    { q: "What areas are covered by school transport?", a: "We cover Motera, Chandkheda, Sabarmati, Adalaj, Gandhinagar, and surrounding areas." },
+    { q: "Is there a cafeteria?", a: "No" },
   ],
 };
 

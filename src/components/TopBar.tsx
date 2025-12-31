@@ -23,7 +23,7 @@ const TopBar = () => {
           </div>
           <div className="flex items-center gap-2 text-white/80">
             <MapPin className="h-3.5 w-3.5" />
-            <span>Narendra Modi Stadium Road, Motera, Ahmedabad</span>
+            <span>Swastik Education Campus, Narendra Modi Stadium Road, Motera, Ahmedabad, Gujarat 380005</span>
           </div>
         </div>
       </div>

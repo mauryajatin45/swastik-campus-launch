@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 import EnquiryModal from "./components/EnquiryModal";
+import ScrollToTop from "./components/ScrollToTop";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -20,6 +21,7 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
+import AdmissionForm from "./pages/AdmissionForm";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +62,7 @@ const AppContent = () => {
             <Route path="/about" element={<About />} />
             <Route path="/academics" element={<Academics />} />
             <Route path="/admissions" element={<Admissions />} />
+            <Route path="/admission-form" element={<AdmissionForm />} />
             <Route path="/news" element={<News />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
@@ -83,6 +86,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <AppContent />
       </BrowserRouter>
     </TooltipProvider>

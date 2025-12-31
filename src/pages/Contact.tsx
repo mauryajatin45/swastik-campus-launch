@@ -67,6 +67,7 @@ const Contact = () => {
     email: "",
     phone: "",
     inquiryType: "admission",
+    medium: "",
     message: "",
   });
 
@@ -76,7 +77,7 @@ const Contact = () => {
       title: "Message Sent!",
       description: "Thank you for your inquiry. We will get back to you shortly.",
     });
-    setFormData({ name: "", email: "", phone: "", inquiryType: "admission", message: "" });
+    setFormData({ name: "", email: "", phone: "", inquiryType: "admission", medium: "", message: "" });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -228,6 +229,26 @@ const Contact = () => {
                         />
                       </div>
                     </div>
+                    
+                    {/* Medium Selection - Only show for admission inquiries */}
+                    {formData.inquiryType === "admission" && (
+                      <div>
+                        <label htmlFor="medium" className="block text-sm font-medium text-navy mb-2">
+                          Preferred Medium
+                        </label>
+                        <select
+                          id="medium"
+                          name="medium"
+                          value={formData.medium}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-all cursor-pointer"
+                        >
+                          <option value="">Select Medium</option>
+                          <option value="english">English Medium</option>
+                          <option value="gujarati">Gujarati Medium</option>
+                        </select>
+                      </div>
+                    )}
                     <div>
                       <label htmlFor="message" className="block text-sm font-medium text-navy mb-2">
                         Message *
@@ -265,8 +286,8 @@ const Contact = () => {
                       <h3 className="font-heading font-bold text-navy mb-2">Our Location</h3>
                       <p className="text-muted-foreground">
                         Swastik Education Campus<br />
-                        Near Narendra Modi Stadium<br />
-                        Motera, Ahmedabad - 380005
+                        Narendra Modi Stadium Road,<br />
+                        Motera, Ahmedabad, Gujarat 380005
                       </p>
                       <a 
                         href="https://maps.google.com/?q=Swastik+Education+Campus+Motera+Ahmedabad" 
@@ -291,11 +312,11 @@ const Contact = () => {
                       <div className="space-y-2">
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Monday - Friday</span>
-                          <span className="font-medium text-navy">8:00 AM - 4:00 PM</span>
+                          <span className="font-medium text-navy">7:30 AM - 5:00 PM</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Saturday</span>
-                          <span className="font-medium text-navy">9:00 AM - 1:00 PM</span>
+                          <span className="font-medium text-navy">7:30 AM - 3:30 PM</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Sunday</span>
@@ -350,7 +371,7 @@ const Contact = () => {
         {/* Map Overlay Card */}
         <div className="absolute top-8 left-8 bg-white rounded-2xl p-6 shadow-xl max-w-xs hidden md:block">
           <h3 className="font-heading font-bold text-navy mb-2">Swastik Education Campus</h3>
-          <p className="text-muted-foreground text-sm mb-4">Near Narendra Modi Stadium, Motera, Ahmedabad</p>
+          <p className="text-muted-foreground text-sm mb-4">Narendra Modi Stadium Road, Motera, Ahmedabad, Gujarat 380005</p>
           <a 
             href="https://maps.google.com/?q=Swastik+Education+Campus+Motera+Ahmedabad" 
             target="_blank" 

@@ -78,15 +78,15 @@ const steps = [
   {
     number: "03",
     icon: MessageSquare,
-    title: "Parent Interview",
-    description: "Interactive session with parents to understand expectations and share our vision.",
+    title: "Child Parent Consulting",
+    description: "Interactive session with parents and child to understand expectations and share our vision.",
     color: "from-orange to-red-accent",
   },
   {
     number: "04",
     icon: CreditCard,
-    title: "Fee Payment",
-    description: "Upon selection, complete the fee payment and enrollment formalities.",
+    title: "Admission Form Submission",
+    description: "Upon selection, complete the admission form submission and enrollment formalities.",
     color: "from-red-accent to-orange",
   },
 ];
@@ -115,9 +115,8 @@ const fees = [
 ];
 
 const faqs = [
-  { q: "What is the admission process?", a: "The admission process includes application submission, entrance assessment, parent interview, and fee payment upon selection." },
-  { q: "Is transport facility available?", a: "Yes, we provide GPS-enabled bus transport covering major areas of Ahmedabad including Motera, Chandkheda, Sabarmati, Adalaj, and Gandhinagar." },
-  { q: "What are the school timings?", a: "School hours are from 8:00 AM to 3:00 PM, Monday to Saturday. Half-day on Saturdays." },
+  { q: "What is the admission process?", a: "The admission process includes application submission, entrance assessment, child-parent consulting session, and admission form submission upon selection." },
+  { q: "What are the school timings?", a: "School hours are from 7:30 AM to 5:00 PM, Monday to Friday, and 7:30 AM to 3:30 PM on Saturday. Sunday is closed." },
   { q: "Are there any scholarships available?", a: "Yes, we offer merit-based scholarships for exceptional students. Contact our admissions office for details." },
 ];
 
@@ -153,8 +152,8 @@ const Admissions = () => {
                   Limited seats available for the upcoming academic session.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Link to="/contact" className="btn-orange group">
-                    Apply Now
+                  <Link to="/admission-form" className="btn-orange group">
+                    Apply for Admission
                     <ArrowRight className="h-4 w-4 arrow-slide" />
                   </Link>
                   <a href="tel:+917096255075" className="border-2 border-white text-white px-6 py-3 font-semibold text-sm rounded-full transition-all duration-300 hover:bg-white hover:text-navy inline-flex items-center gap-2">
@@ -275,48 +274,6 @@ const Admissions = () => {
         </div>
       </section>
 
-      {/* Important Dates */}
-      <section className="py-20 bg-gradient-to-br from-navy via-navy-dark to-navy text-white relative overflow-hidden">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-orange/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-sky-blue/10 rounded-full blur-3xl"></div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <ScrollRevealSection>
-            <div className="text-center mb-12">
-              <span className="inline-block bg-white/10 backdrop-blur-sm text-orange px-4 py-2 rounded-full text-sm font-semibold mb-4 border border-white/20">
-                Mark Your Calendar
-              </span>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Important Dates 2025-26</h2>
-              <p className="text-white/70 max-w-2xl mx-auto">
-                Key dates for the admission process. Don't miss the deadlines!
-              </p>
-            </div>
-
-            <div className="max-w-3xl mx-auto">
-              <div className="relative">
-                {/* Timeline line */}
-                <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-orange via-sky-blue to-green"></div>
-
-                {dates.map((item, index) => (
-                  <div key={index} className="relative flex items-center gap-6 mb-6 group">
-                    {/* Dot */}
-                    <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border-2 border-orange flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                      <Calendar className="h-6 w-6 text-orange" />
-                    </div>
-                    {/* Content */}
-                    <div className="flex-1 bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/20 hover:bg-white/15 transition-colors">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                        <h3 className="font-heading font-bold text-white">{item.event}</h3>
-                        <span className="text-orange font-semibold">{item.date}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </ScrollRevealSection>
-        </div>
-      </section>
 
       {/* Eligibility Criteria */}
       <section className="py-20 bg-white">
@@ -360,62 +317,6 @@ const Admissions = () => {
         </div>
       </section>
 
-      {/* Fee Structure */}
-      <section className="py-20 bg-pale-gray">
-        <div className="container mx-auto px-4">
-          <ScrollRevealSection>
-            <div className="text-center mb-12">
-              <span className="inline-block bg-white text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                Investment in Education
-              </span>
-              <h2 className="section-title mb-4">Fee Structure</h2>
-              <p className="section-subtitle mx-auto">
-                Transparent pricing for quality education
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {fees.map((item, index) => (
-                <div 
-                  key={index} 
-                  className={`bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-border ${item.popular ? 'ring-2 ring-navy relative' : ''}`}
-                >
-                  {/* {item.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-navy text-white px-4 py-1 rounded-full text-xs font-semibold">
-                      Most Popular
-                    </div>
-                  )} */}
-                  <div className="p-6 pt-8 border-b border-border text-center">
-                    <h3 className="font-heading font-bold text-xl text-navy mb-1">{item.level}</h3>
-                    <p className="text-muted-foreground text-sm">{item.grades}</p>
-                  </div>
-                  <div className="p-6">
-                    <div className="text-center mb-6 py-4 bg-pale-gray rounded-xl">
-                      <p className="text-muted-foreground text-sm mb-1">Annual Fee</p>
-                      <p className="text-xl font-heading font-bold text-navy">{item.annual}</p>
-                    </div>
-                    <ul className="space-y-3 mb-6">
-                      {item.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <CheckCircle className="h-4 w-4 text-green flex-shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <Link to="/contact" className="block text-center bg-navy text-white px-4 py-3 rounded-xl font-semibold hover:bg-navy-dark transition-colors">
-                      Get Details
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-center text-muted-foreground mt-8">
-              * Contact our admissions office for detailed fee structure and payment plans.
-            </p>
-          </ScrollRevealSection>
-        </div>
-      </section>
 
       {/* FAQs */}
       <section className="py-20 bg-white">
@@ -480,7 +381,7 @@ const Admissions = () => {
                   <Clock className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="font-heading font-bold text-navy mb-2">Office Hours</h3>
-                <p className="text-muted-foreground">Mon-Sat: 9:00 AM - 5:00 PM</p>
+                <p className="text-muted-foreground">Mon-Fri: 7:30 AM - 5:00 PM<br />Sat: 7:30 AM - 3:30 PM</p>
               </div>
             </div>
           </ScrollRevealSection>
@@ -504,10 +405,6 @@ const Admissions = () => {
                   Apply Now
                   <ArrowRight className="h-4 w-4 arrow-slide" />
                 </Link>
-                <button className="border-2 border-white text-white px-6 py-3 font-semibold text-sm rounded-full transition-all duration-300 hover:bg-white hover:text-navy inline-flex items-center gap-2">
-                  <Download className="h-4 w-4" />
-                  Download Brochure
-                </button>
               </div>
             </div>
           </ScrollRevealSection>

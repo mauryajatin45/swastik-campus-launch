@@ -117,4 +117,23 @@ export const newsAPI = {
     api.patch(`/news/${id}/featured`, { is_featured }),
 };
 
+// Leadership APIs
+export const leadershipAPI = {
+  getAll: () => api.get('/leadership'),
+  
+  getOne: (id: number) => api.get(`/leadership/${id}`),
+  
+  create: (formData: FormData) =>
+    api.post('/leadership', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  
+  update: (id: number, formData: FormData) =>
+    api.put(`/leadership/${id}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  
+  delete: (id: number) => api.delete(`/leadership/${id}`),
+};
+
 export default api;

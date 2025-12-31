@@ -4,7 +4,6 @@ import {
   WhyChooseUsSection,
   StatisticsSection,
   PrincipalMessageSection,
-  ProgramsSection,
   NewsUpdatesSection,
   CoreValuesSection,
   TestimonialsSection,
@@ -21,7 +20,7 @@ const Home = () => {
       <WhyChooseUsSection />
       <StatisticsSection />
       <PrincipalMessageSection />
-      <ProgramsSection />
+
       <NewsUpdatesSection />
       <CoreValuesSection />
       <TestimonialsSection />

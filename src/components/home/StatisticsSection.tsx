@@ -1,9 +1,8 @@
 import { useScrollReveal, useCountUp } from "./hooks";
 
 const stats = [
-  { number: "15:1", label: "Student-Teacher Ratio", color: "text-green" },
-  { number: "15+", label: "Years of Excellence", color: "text-red-accent" },
-  { number: "2000+", label: "Happy Students", color: "text-sky-blue" },
+  { number: "25+", label: "Years of Excellence", color: "text-red-accent" },
+  { number: "15000+", label: "Proud Students", color: "text-sky-blue" },
   { number: "50+", label: "Co-curricular Activities", color: "text-orange" },
 ];
 
@@ -48,9 +47,11 @@ const StatisticsSection = () => {
           ref={ref}
           className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-8">
             {stats.map((stat, index) => (
-              <StatCard key={index} stat={stat} isVisible={isVisible} />
+              <div key={index} className="w-full sm:w-auto sm:min-w-[200px] sm:max-w-[280px] flex-shrink-0">
+                <StatCard stat={stat} isVisible={isVisible} />
+              </div>
             ))}
           </div>
         </div>

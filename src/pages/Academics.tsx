@@ -67,34 +67,34 @@ const levels = [
   {
     id: "early",
     title: "Early Years",
-    grades: "Nursery - KG (Ages 3-6)",
+    grades: "Nursery - Balvatika",
     icon: Users,
     color: "from-sky-blue to-green",
     bgColor: "bg-sky-blue",
     description: "Our Early Years program provides a nurturing foundation for young learners through play-based education, developing curiosity and love for learning.",
     highlights: [
+      "Nursery/Toddlers - Minimum 2 years completed by June 1st",
+      "Jr. KG - Minimum 3 years completed by June 1st",
+      "Sr. KG - Minimum 4 years completed by June 1st",
+      "Balvatika - Minimum 5 years completed by June 1st",
       "Activity-based learning methodology",
       "Focus on motor skills and social development",
-      "Introduction to basic literacy and numeracy",
-      "Art, music, and physical activities",
-      "Safe and stimulating environment",
-      "Trained and caring teachers",
     ],
     subjects: ["English", "Hindi", "Gujarati", "Numbers", "Art & Craft", "Music", "Physical Play"],
   },
   {
     id: "primary",
     title: "Primary School",
-    grades: "Grades 1-5 (Ages 6-11)",
+    grades: "Grades 1-5",
     icon: BookOpen,
     color: "from-green to-sky-blue",
     bgColor: "bg-green",
     description: "Building strong academic foundations while nurturing creativity, critical thinking, and a love for lifelong learning.",
     highlights: [
+      "Grade 1 - Minimum 6 years completed by June 1st",
+      "Grade 2 and above - As per GSEB age criteria",
       "Comprehensive curriculum in English and Gujarati Medium",
       "Strong emphasis on mathematics and science",
-      "Language development in English, Hindi, and Gujarati",
-      "Environmental studies and social science",
       "Computer education and digital literacy",
       "Regular assessments and parent feedback",
     ],
@@ -103,17 +103,17 @@ const levels = [
   {
     id: "secondary",
     title: "Secondary School",
-    grades: "Grades 6-10 (Ages 11-16)",
+    grades: "Grades 6-10",
     icon: GraduationCap,
     color: "from-orange to-red-accent",
     bgColor: "bg-orange",
     description: "Preparing students for academic excellence and board examinations with rigorous curriculum and personalized guidance.",
     highlights: [
+      "Admission as per GSEB age criteria",
       "GSEB curriculum with both mediums available",
       "Specialized subject streams in higher grades",
       "Board examination preparation and mock tests",
       "Career guidance and counseling",
-      "Advanced science and mathematics programs",
       "Competitive exam preparation (JEE, NEET foundations)",
     ],
     subjects: ["English", "Hindi/Sanskrit", "Gujarati", "Mathematics", "Science", "Social Science", "Computer", "Physical Education"],
@@ -181,9 +181,9 @@ const Academics = () => {
                   Apply for Admission
                   <ArrowRight className="h-4 w-4 arrow-slide" />
                 </Link>
-                <Link to="/contact" className="border-2 border-white text-white px-6 py-3 font-semibold text-sm rounded-full transition-all duration-300 hover:bg-white hover:text-navy inline-flex items-center gap-2">
+                {/* <Link to="/contact" className="border-2 border-white text-white px-6 py-3 font-semibold text-sm rounded-full transition-all duration-300 hover:bg-white hover:text-navy inline-flex items-center gap-2">
                   Download Brochure
-                </Link>
+                </Link> */}
               </div>
             </div>
           </ScrollRevealSection>
@@ -311,7 +311,7 @@ const Academics = () => {
                       <div className="space-y-3">
                         <div className="flex items-center gap-3 text-white/90">
                           <Clock className="h-5 w-5" />
-                          <span>School Hours: 8:00 AM - 3:00 PM</span>
+                          <span>School Hours: 7:30 AM - 5:00 PM (Mon-Fri), 7:30 AM - 3:30 PM (Sat)</span>
                         </div>
                         <div className="flex items-center gap-3 text-white/90">
                           <Calendar className="h-5 w-5" />

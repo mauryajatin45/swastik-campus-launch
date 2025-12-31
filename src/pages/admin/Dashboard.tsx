@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { enquiryAPI, galleryAPI } from "../../services/api";
+import { enquiryAPI, galleryAPI, newsAPI, leadershipAPI } from "../../services/api";
 import {
   LogOut,
   MessageSquare,
@@ -9,11 +9,18 @@ import {
   Download,
   Trash2,
   Search,
-  Calendar,
   Upload,
   X,
-  Filter,
   RefreshCw,
+  Newspaper,
+  Plus,
+  Edit,
+  Star,
+  StarOff,
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
 } from "lucide-react";
 
 interface Enquiry {
@@ -24,6 +31,7 @@ interface Enquiry {
   inquiry_type: string;
   message: string;
   status: "new" | "contacted" | "converted" | "closed";
+  medium?: string;
   created_at: string;
 }
 
@@ -35,10 +43,34 @@ interface GalleryPhoto {
   created_at: string;
 }
 
+interface NewsItem {
+  id: number;
+  title: string;
+  type: string;
+  excerpt: string;
+  content: string;
+  image_url: string;
+  event_date: string | null;
+  event_time: string | null;
+  event_location: string | null;
+  is_featured: boolean;
+  created_at: string;
+}
+
+interface LeadershipMember {
+  id: number;
+  name: string;
+  role: string;
+  description: string;
+  image_url: string | null;
+  display_order: number;
+  created_at: string;
+}
+
 const AdminDashboard = () => {
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"enquiries" | "gallery">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "gallery" | "news" | "leadership">("enquiries");
 
   // Enquiry states
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
@@ -58,11 +90,47 @@ const AdminDashboard = () => {
   const [uploadCategory, setUploadCategory] = useState("Campus");
   const [isUploading, setIsUploading] = useState(false);
 
+  // News states
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [newsLoading, setNewsLoading] = useState(false);
+  const [showNewsModal, setShowNewsModal] = useState(false);
+  const [editingNews, setEditingNews] = useState<NewsItem | null>(null);
+  const [newsForm, setNewsForm] = useState({
+    title: "",
+    type: "News",
+    excerpt: "",
+    content: "",
+    event_date: "",
+    event_time: "",
+    event_location: "",
+    is_featured: false,
+  });
+  const [newsImage, setNewsImage] = useState<File | null>(null);
+  const [isSavingNews, setIsSavingNews] = useState(false);
+
+  // Leadership states
+  const [leadershipMembers, setLeadershipMembers] = useState<LeadershipMember[]>([]);
+  const [leadershipLoading, setLeadershipLoading] = useState(false);
+  const [showLeadershipModal, setShowLeadershipModal] = useState(false);
+  const [editingMember, setEditingMember] = useState<LeadershipMember | null>(null);
+  const [leadershipForm, setLeadershipForm] = useState({
+    name: "",
+    role: "",
+    description: "",
+    display_order: 0,
+  });
+  const [memberImage, setMemberImage] = useState<File | null>(null);
+  const [isSavingMember, setIsSavingMember] = useState(false);
+
   useEffect(() => {
     if (activeTab === "enquiries") {
       fetchEnquiries();
-    } else {
+    } else if (activeTab === "gallery") {
       fetchGallery();
+    } else if (activeTab === "news") {
+      fetchNews();
+    } else {
+      fetchLeadership();
     }
   }, [activeTab, statusFilter, fromDate, toDate]);
 
@@ -92,6 +160,18 @@ const AdminDashboard = () => {
       console.error("Failed to fetch gallery:", error);
     } finally {
       setGalleryLoading(false);
+    }
+  };
+
+  const fetchNews = async () => {
+    setNewsLoading(true);
+    try {
+      const response = await newsAPI.getAll();
+      setNewsItems(response.data);
+    } catch (error) {
+      console.error("Failed to fetch news:", error);
+    } finally {
+      setNewsLoading(false);
     }
   };
 
@@ -162,6 +242,161 @@ const AdminDashboard = () => {
     }
   };
 
+  // News handlers
+  const openNewsModal = (news?: NewsItem) => {
+    if (news) {
+      setEditingNews(news);
+      setNewsForm({
+        title: news.title,
+        type: news.type,
+        excerpt: news.excerpt,
+        content: news.content || "",
+        event_date: news.event_date || "",
+        event_time: news.event_time || "",
+        event_location: news.event_location || "",
+        is_featured: news.is_featured,
+      });
+    } else {
+      setEditingNews(null);
+      setNewsForm({
+        title: "",
+        type: "News",
+        excerpt: "",
+        content: "",
+        event_date: "",
+        event_time: "",
+        event_location: "",
+        is_featured: false,
+      });
+    }
+    setNewsImage(null);
+    setShowNewsModal(true);
+  };
+
+  const handleSaveNews = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingNews(true);
+    try {
+      const formData = new FormData();
+      formData.append("title", newsForm.title);
+      formData.append("type", newsForm.type);
+      formData.append("excerpt", newsForm.excerpt);
+      formData.append("content", newsForm.content);
+      formData.append("event_date", newsForm.event_date);
+      formData.append("event_time", newsForm.event_time);
+      formData.append("event_location", newsForm.event_location);
+      formData.append("is_featured", newsForm.is_featured.toString());
+      if (newsImage) {
+        formData.append("image", newsImage);
+      }
+
+      if (editingNews) {
+        await newsAPI.update(editingNews.id, formData);
+      } else {
+        await newsAPI.create(formData);
+      }
+
+      setShowNewsModal(false);
+      fetchNews();
+    } catch (error) {
+      console.error("Failed to save news:", error);
+    } finally {
+      setIsSavingNews(false);
+    }
+  };
+
+  const handleDeleteNews = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this news item?")) return;
+    try {
+      await newsAPI.delete(id);
+      fetchNews();
+    } catch (error) {
+      console.error("Failed to delete news:", error);
+    }
+  };
+
+  const handleToggleFeatured = async (id: number, currentStatus: boolean) => {
+    try {
+      await newsAPI.toggleFeatured(id, !currentStatus);
+      fetchNews();
+    } catch (error) {
+      console.error("Failed to toggle featured:", error);
+    }
+  };
+
+  // Leadership handlers
+  const fetchLeadership = async () => {
+    setLeadershipLoading(true);
+    try {
+      const response = await leadershipAPI.getAll();
+      setLeadershipMembers(response.data);
+    } catch (error) {
+      console.error("Failed to fetch leadership:", error);
+    } finally {
+      setLeadershipLoading(false);
+    }
+  };
+
+  const openLeadershipModal = (member?: LeadershipMember) => {
+    if (member) {
+      setEditingMember(member);
+      setLeadershipForm({
+        name: member.name,
+        role: member.role,
+        description: member.description,
+        display_order: member.display_order,
+      });
+    } else {
+      setEditingMember(null);
+      setLeadershipForm({
+        name: "",
+        role: "",
+        description: "",
+        display_order: leadershipMembers.length,
+      });
+    }
+    setMemberImage(null);
+    setShowLeadershipModal(true);
+  };
+
+  const handleSaveMember = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingMember(true);
+    try {
+      const formData = new FormData();
+      formData.append("name", leadershipForm.name);
+      formData.append("role", leadershipForm.role);
+      formData.append("description", leadershipForm.description);
+      formData.append("display_order", leadershipForm.display_order.toString());
+      if (memberImage) {
+        formData.append("image", memberImage);
+      }
+
+      if (editingMember) {
+        await leadershipAPI.update(editingMember.id, formData);
+      } else {
+        await leadershipAPI.create(formData);
+      }
+
+      setShowLeadershipModal(false);
+      fetchLeadership();
+    } catch (error) {
+      console.error("Failed to save member:", error);
+    } finally {
+      setIsSavingMember(false);
+    }
+  };
+
+  const handleDeleteMember = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this team member?")) return;
+    try {
+      await leadershipAPI.delete(id);
+      fetchLeadership();
+    } catch (error) {
+      console.error("Failed to delete member:", error);
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/admin");
@@ -169,16 +404,20 @@ const AdminDashboard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "new":
-        return "bg-sky-blue/20 text-sky-blue";
-      case "contacted":
-        return "bg-orange/20 text-orange";
-      case "converted":
-        return "bg-green/20 text-green";
-      case "closed":
-        return "bg-muted-foreground/20 text-muted-foreground";
-      default:
-        return "bg-gray-100 text-gray-600";
+      case "new": return "bg-sky-blue/20 text-sky-blue";
+      case "contacted": return "bg-orange/20 text-orange";
+      case "converted": return "bg-green/20 text-green";
+      case "closed": return "bg-muted-foreground/20 text-muted-foreground";
+      default: return "bg-gray-100 text-gray-600";
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "Event": return "bg-orange text-white";
+      case "Achievement": return "bg-green text-white";
+      case "Activity": return "bg-sky-blue text-white";
+      default: return "bg-navy text-white";
     }
   };
 
@@ -210,7 +449,7 @@ const AdminDashboard = () => {
 
       <div className="container mx-auto p-6">
         {/* Tab Navigation */}
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-wrap gap-4 mb-6">
           <button
             onClick={() => setActiveTab("enquiries")}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
@@ -233,12 +472,33 @@ const AdminDashboard = () => {
             <Image className="h-5 w-5" />
             Gallery
           </button>
+          <button
+            onClick={() => setActiveTab("news")}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+              activeTab === "news"
+                ? "bg-navy text-white shadow-lg"
+                : "bg-white text-navy hover:bg-pale-blue"
+            }`}
+          >
+            <Newspaper className="h-5 w-5" />
+            News & Events
+          </button>
+          <button
+            onClick={() => setActiveTab("leadership")}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+              activeTab === "leadership"
+                ? "bg-navy text-white shadow-lg"
+                : "bg-white text-navy hover:bg-pale-blue"
+            }`}
+          >
+            <Users className="h-5 w-5" />
+            Leadership Team
+          </button>
         </div>
 
         {/* Enquiries Tab */}
         {activeTab === "enquiries" && (
           <div className="bg-white rounded-2xl shadow-sm p-6">
-            {/* Filters */}
             <div className="flex flex-wrap gap-4 mb-6">
               <div className="flex-1 min-w-[200px]">
                 <div className="relative">
@@ -263,48 +523,20 @@ const AdminDashboard = () => {
                 <option value="converted">Converted</option>
                 <option value="closed">Closed</option>
               </select>
-              <input
-                type="date"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-                className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-navy/20"
-                placeholder="From Date"
-              />
-              <input
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-navy/20"
-                placeholder="To Date"
-              />
-              <button
-                onClick={fetchEnquiries}
-                className="flex items-center gap-2 px-4 py-2 bg-pale-blue text-navy rounded-lg hover:bg-sky-blue/20 transition-colors"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Refresh
+              <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="px-4 py-2 border border-border rounded-lg" />
+              <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="px-4 py-2 border border-border rounded-lg" />
+              <button onClick={fetchEnquiries} className="flex items-center gap-2 px-4 py-2 bg-pale-blue text-navy rounded-lg hover:bg-sky-blue/20">
+                <RefreshCw className="h-4 w-4" /> Refresh
               </button>
-              <button
-                onClick={handleExport}
-                disabled={isExporting}
-                className="flex items-center gap-2 px-4 py-2 bg-green text-white rounded-lg hover:bg-green/90 transition-colors disabled:opacity-50"
-              >
-                <Download className="h-4 w-4" />
-                {isExporting ? "Exporting..." : "Export Excel"}
+              <button onClick={handleExport} disabled={isExporting} className="flex items-center gap-2 px-4 py-2 bg-green text-white rounded-lg hover:bg-green/90 disabled:opacity-50">
+                <Download className="h-4 w-4" /> {isExporting ? "Exporting..." : "Export Excel"}
               </button>
             </div>
 
-            {/* Table */}
             {enquiryLoading ? (
-              <div className="text-center py-12">
-                <div className="w-8 h-8 border-4 border-navy/20 border-t-navy rounded-full animate-spin mx-auto"></div>
-                <p className="text-muted-foreground mt-4">Loading enquiries...</p>
-              </div>
+              <div className="text-center py-12"><div className="w-8 h-8 border-4 border-navy/20 border-t-navy rounded-full animate-spin mx-auto"></div></div>
             ) : filteredEnquiries.length === 0 ? (
-              <div className="text-center py-12">
-                <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No enquiries found</p>
-              </div>
+              <div className="text-center py-12"><MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" /><p className="text-muted-foreground">No enquiries found</p></div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -313,6 +545,7 @@ const AdminDashboard = () => {
                       <th className="text-left py-3 px-4 font-medium text-navy">Name</th>
                       <th className="text-left py-3 px-4 font-medium text-navy">Contact</th>
                       <th className="text-left py-3 px-4 font-medium text-navy">Type</th>
+                      <th className="text-left py-3 px-4 font-medium text-navy">Medium</th>
                       <th className="text-left py-3 px-4 font-medium text-navy">Message</th>
                       <th className="text-left py-3 px-4 font-medium text-navy">Status</th>
                       <th className="text-left py-3 px-4 font-medium text-navy">Date</th>
@@ -323,40 +556,29 @@ const AdminDashboard = () => {
                     {filteredEnquiries.map((enquiry) => (
                       <tr key={enquiry.id} className="border-b border-border hover:bg-pale-gray/50">
                         <td className="py-3 px-4 font-medium">{enquiry.name}</td>
-                        <td className="py-3 px-4">
-                          <div className="text-sm">
-                            <p>{enquiry.email}</p>
-                            <p className="text-muted-foreground">{enquiry.phone}</p>
-                          </div>
-                        </td>
+                        <td className="py-3 px-4"><div className="text-sm"><p>{enquiry.email}</p><p className="text-muted-foreground">{enquiry.phone}</p></div></td>
                         <td className="py-3 px-4 capitalize">{enquiry.inquiry_type}</td>
                         <td className="py-3 px-4">
-                          <p className="max-w-[200px] truncate text-sm text-muted-foreground">
-                            {enquiry.message || "-"}
-                          </p>
+                          {enquiry.medium ? (
+                            <span className="px-2 py-1 bg-sky-blue/10 text-sky-blue rounded-full text-xs font-medium capitalize">
+                              {enquiry.medium}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-xs">-</span>
+                          )}
                         </td>
+                        <td className="py-3 px-4"><p className="max-w-[200px] truncate text-sm text-muted-foreground">{enquiry.message || "-"}</p></td>
                         <td className="py-3 px-4">
-                          <select
-                            value={enquiry.status}
-                            onChange={(e) => handleStatusChange(enquiry.id, e.target.value)}
-                            className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(enquiry.status)} border-0 cursor-pointer`}
-                          >
+                          <select value={enquiry.status} onChange={(e) => handleStatusChange(enquiry.id, e.target.value)} className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(enquiry.status)} border-0 cursor-pointer`}>
                             <option value="new">New</option>
                             <option value="contacted">Contacted</option>
                             <option value="converted">Converted</option>
                             <option value="closed">Closed</option>
                           </select>
                         </td>
-                        <td className="py-3 px-4 text-sm text-muted-foreground">
-                          {new Date(enquiry.created_at).toLocaleDateString()}
-                        </td>
+                        <td className="py-3 px-4 text-sm text-muted-foreground">{new Date(enquiry.created_at).toLocaleDateString()}</td>
                         <td className="py-3 px-4">
-                          <button
-                            onClick={() => handleDeleteEnquiry(enquiry.id)}
-                            className="text-red-accent hover:bg-red-accent/10 p-2 rounded-lg transition-colors"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
+                          <button onClick={() => handleDeleteEnquiry(enquiry.id)} className="text-red-accent hover:bg-red-accent/10 p-2 rounded-lg"><Trash2 className="h-4 w-4" /></button>
                         </td>
                       </tr>
                     ))}
@@ -370,53 +592,133 @@ const AdminDashboard = () => {
         {/* Gallery Tab */}
         {activeTab === "gallery" && (
           <div className="bg-white rounded-2xl shadow-sm p-6">
-            {/* Header */}
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-heading font-bold text-xl text-navy">
-                Gallery Photos ({photos.length})
-              </h2>
-              <button
-                onClick={() => setShowUploadModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark transition-colors"
-              >
-                <Upload className="h-4 w-4" />
-                Upload Photo
+              <h2 className="font-heading font-bold text-xl text-navy">Gallery Photos ({photos.length})</h2>
+              <button onClick={() => setShowUploadModal(true)} className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark">
+                <Upload className="h-4 w-4" /> Upload Photo
               </button>
             </div>
 
-            {/* Gallery Grid */}
             {galleryLoading ? (
-              <div className="text-center py-12">
-                <div className="w-8 h-8 border-4 border-navy/20 border-t-navy rounded-full animate-spin mx-auto"></div>
-                <p className="text-muted-foreground mt-4">Loading photos...</p>
-              </div>
+              <div className="text-center py-12"><div className="w-8 h-8 border-4 border-navy/20 border-t-navy rounded-full animate-spin mx-auto"></div></div>
             ) : photos.length === 0 ? (
-              <div className="text-center py-12">
-                <Image className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No photos uploaded yet</p>
-              </div>
+              <div className="text-center py-12"><Image className="h-12 w-12 text-muted-foreground mx-auto mb-4" /><p className="text-muted-foreground">No photos uploaded yet</p></div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {photos.map((photo) => (
                   <div key={photo.id} className="group relative rounded-xl overflow-hidden">
-                    <img
-                      src={photo.cloudinary_url}
-                      alt={photo.title}
-                      className="w-full h-48 object-cover"
-                    />
+                    <img src={photo.cloudinary_url} alt={photo.title} className="w-full h-48 object-cover" />
                     <div className="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                       <p className="text-white font-medium text-sm">{photo.title}</p>
                       <p className="text-white/70 text-xs">{photo.category}</p>
-                      <button
-                        onClick={() => handleDeletePhoto(photo.id)}
-                        className="absolute top-2 right-2 p-2 bg-red-accent text-white rounded-lg hover:bg-red-accent/80 transition-colors"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <button onClick={() => handleDeletePhoto(photo.id)} className="absolute top-2 right-2 p-2 bg-red-accent text-white rounded-lg"><Trash2 className="h-4 w-4" /></button>
                     </div>
-                    <span className="absolute top-2 left-2 bg-navy/80 text-white text-xs px-2 py-1 rounded-full">
-                      {photo.category}
-                    </span>
+                    <span className="absolute top-2 left-2 bg-navy/80 text-white text-xs px-2 py-1 rounded-full">{photo.category}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* News Tab */}
+        {activeTab === "news" && (
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-heading font-bold text-xl text-navy">News & Events ({newsItems.length})</h2>
+              <button onClick={() => openNewsModal()} className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark">
+                <Plus className="h-4 w-4" /> Add News/Event
+              </button>
+            </div>
+
+            {newsLoading ? (
+              <div className="text-center py-12"><div className="w-8 h-8 border-4 border-navy/20 border-t-navy rounded-full animate-spin mx-auto"></div></div>
+            ) : newsItems.length === 0 ? (
+              <div className="text-center py-12"><Newspaper className="h-12 w-12 text-muted-foreground mx-auto mb-4" /><p className="text-muted-foreground">No news items yet</p></div>
+            ) : (
+              <div className="space-y-4">
+                {newsItems.map((item) => (
+                  <div key={item.id} className="flex gap-4 p-4 border border-border rounded-xl hover:border-navy/30 transition-colors">
+                    {item.image_url && (
+                      <img src={item.image_url} alt={item.title} className="w-32 h-24 object-cover rounded-lg flex-shrink-0" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getTypeColor(item.type)}`}>{item.type}</span>
+                            {item.is_featured && <span className="px-2 py-0.5 bg-orange/20 text-orange rounded-full text-xs font-medium flex items-center gap-1"><Star className="h-3 w-3" /> Featured</span>}
+                          </div>
+                          <h3 className="font-heading font-bold text-navy">{item.title}</h3>
+                          <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{item.excerpt}</p>
+                          {item.type === "Event" && item.event_date && (
+                            <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {item.event_date}</span>
+                              {item.event_time && <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {item.event_time}</span>}
+                              {item.event_location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {item.event_location}</span>}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <button onClick={() => handleToggleFeatured(item.id, item.is_featured)} className={`p-2 rounded-lg transition-colors ${item.is_featured ? "text-orange bg-orange/10" : "text-muted-foreground hover:bg-pale-gray"}`} title={item.is_featured ? "Remove from featured" : "Mark as featured"}>
+                            {item.is_featured ? <Star className="h-4 w-4" /> : <StarOff className="h-4 w-4" />}
+                          </button>
+                          <button onClick={() => openNewsModal(item)} className="p-2 text-sky-blue hover:bg-sky-blue/10 rounded-lg"><Edit className="h-4 w-4" /></button>
+                          <button onClick={() => handleDeleteNews(item.id)} className="p-2 text-red-accent hover:bg-red-accent/10 rounded-lg"><Trash2 className="h-4 w-4" /></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        {/* Leadership Tab */}
+        {activeTab === "leadership" && (
+          <div className="bg-white rounded-2xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-heading font-bold text-xl text-navy">Leadership Team ({leadershipMembers.length})</h2>
+              <button onClick={() => openLeadershipModal()} className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark">
+                <Plus className="h-4 w-4" /> Add Team Member
+              </button>
+            </div>
+
+            {leadershipLoading ? (
+              <div className="text-center py-12"><div className="w-8 h-8 border-4 border-navy/20 border-t-navy rounded-full animate-spin mx-auto"></div></div>
+            ) : leadershipMembers.length === 0 ? (
+              <div className="text-center py-12"><Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" /><p className="text-muted-foreground">No team members yet</p></div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {leadershipMembers.map((member) => (
+                  <div key={member.id} className="border border-border rounded-xl p-4 hover:border-navy/30 transition-colors">
+                    <div className="flex items-start gap-4">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-sky-blue to-green flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        {member.image_url ? (
+                          <img src={member.image_url} alt={member.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-xl font-bold text-white">
+                            {member.name.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-heading font-bold text-navy truncate">{member.name}</h3>
+                        <p className="text-sky-blue text-sm font-medium truncate">{member.role}</p>
+                        <p className="text-muted-foreground text-sm mt-1 line-clamp-2">{member.description}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border">
+                      <span className="text-xs text-muted-foreground">Order: {member.display_order}</span>
+                      <div className="ml-auto flex gap-2">
+                        <button onClick={() => openLeadershipModal(member)} className="p-2 text-sky-blue hover:bg-sky-blue/10 rounded-lg">
+                          <Edit className="h-4 w-4" />
+                        </button>
+                        <button onClick={() => handleDeleteMember(member.id)} className="p-2 text-red-accent hover:bg-red-accent/10 rounded-lg">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -425,84 +727,142 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* Upload Modal */}
+      {/* Gallery Upload Modal */}
       {showUploadModal && (
         <div className="fixed inset-0 bg-navy/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-heading font-bold text-xl text-navy">Upload Photo</h3>
-              <button
-                onClick={() => setShowUploadModal(false)}
-                className="p-2 hover:bg-pale-gray rounded-lg transition-colors"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <button onClick={() => setShowUploadModal(false)} className="p-2 hover:bg-pale-gray rounded-lg"><X className="h-5 w-5" /></button>
             </div>
-
             <form onSubmit={handleUpload} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-navy mb-2">Title</label>
-                <input
-                  type="text"
-                  value={uploadTitle}
-                  onChange={(e) => setUploadTitle(e.target.value)}
-                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-navy/20"
-                  placeholder="Enter photo title"
-                  required
-                />
+                <input type="text" value={uploadTitle} onChange={(e) => setUploadTitle(e.target.value)} className="w-full px-4 py-2 border border-border rounded-lg" placeholder="Enter photo title" required />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-navy mb-2">Category</label>
-                <select
-                  value={uploadCategory}
-                  onChange={(e) => setUploadCategory(e.target.value)}
-                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-navy/20"
-                >
+                <select value={uploadCategory} onChange={(e) => setUploadCategory(e.target.value)} className="w-full px-4 py-2 border border-border rounded-lg">
                   <option value="Campus">Campus</option>
                   <option value="Events">Events</option>
                   <option value="Sports">Sports</option>
                   <option value="Activities">Activities</option>
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-navy mb-2">Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-navy/20"
-                  required
-                />
+                <input type="file" accept="image/*" onChange={(e) => setUploadFile(e.target.files?.[0] || null)} className="w-full px-4 py-2 border border-border rounded-lg" required />
               </div>
+              {uploadFile && <img src={URL.createObjectURL(uploadFile)} alt="Preview" className="w-full h-40 object-cover rounded-lg" />}
+              <button type="submit" disabled={isUploading} className="w-full bg-navy text-white py-3 rounded-lg font-medium hover:bg-navy-dark disabled:opacity-50 flex items-center justify-center gap-2">
+                {isUploading ? <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Uploading...</> : <><Upload className="h-5 w-5" /> Upload Photo</>}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
-              {uploadFile && (
-                <div className="mt-4">
-                  <img
-                    src={URL.createObjectURL(uploadFile)}
-                    alt="Preview"
-                    className="w-full h-40 object-cover rounded-lg"
-                  />
+      {/* News Modal */}
+      {showNewsModal && (
+        <div className="fixed inset-0 bg-navy/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-2xl my-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-heading font-bold text-xl text-navy">{editingNews ? "Edit News/Event" : "Add News/Event"}</h3>
+              <button onClick={() => setShowNewsModal(false)} className="p-2 hover:bg-pale-gray rounded-lg"><X className="h-5 w-5" /></button>
+            </div>
+            <form onSubmit={handleSaveNews} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-navy mb-2">Title *</label>
+                  <input type="text" value={newsForm.title} onChange={(e) => setNewsForm({ ...newsForm, title: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" required />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-navy mb-2">Type *</label>
+                  <select value={newsForm.type} onChange={(e) => setNewsForm({ ...newsForm, type: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg">
+                    <option value="News">News</option>
+                    <option value="Event">Event</option>
+                    <option value="Achievement">Achievement</option>
+                    <option value="Activity">Activity</option>
+                  </select>
+                </div>
+                <div className="flex items-center gap-3">
+                  <input type="checkbox" id="featured" checked={newsForm.is_featured} onChange={(e) => setNewsForm({ ...newsForm, is_featured: e.target.checked })} className="w-5 h-5 rounded" />
+                  <label htmlFor="featured" className="text-sm font-medium text-navy">Mark as Featured</label>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Short Description *</label>
+                <textarea value={newsForm.excerpt} onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" rows={2} required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Full Content</label>
+                <textarea value={newsForm.content} onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" rows={4} />
+              </div>
+              {newsForm.type === "Event" && (
+                <div className="grid grid-cols-3 gap-4 p-4 bg-pale-gray rounded-lg">
+                  <div>
+                    <label className="block text-sm font-medium text-navy mb-2">Event Date</label>
+                    <input type="date" value={newsForm.event_date} onChange={(e) => setNewsForm({ ...newsForm, event_date: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-navy mb-2">Event Time</label>
+                    <input type="time" value={newsForm.event_time} onChange={(e) => setNewsForm({ ...newsForm, event_time: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-navy mb-2">Location</label>
+                    <input type="text" value={newsForm.event_location} onChange={(e) => setNewsForm({ ...newsForm, event_location: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" placeholder="e.g. Main Hall" />
+                  </div>
                 </div>
               )}
-
-              <button
-                type="submit"
-                disabled={isUploading}
-                className="w-full bg-navy text-white py-3 rounded-lg font-medium hover:bg-navy-dark transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {isUploading ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Uploading...
-                  </>
-                ) : (
-                  <>
-                    <Upload className="h-5 w-5" />
-                    Upload Photo
-                  </>
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Image {!editingNews && "(Optional)"}</label>
+                <input type="file" accept="image/*" onChange={(e) => setNewsImage(e.target.files?.[0] || null)} className="w-full px-4 py-2 border border-border rounded-lg" />
+                {(newsImage || editingNews?.image_url) && (
+                  <img src={newsImage ? URL.createObjectURL(newsImage) : editingNews?.image_url} alt="Preview" className="w-full h-40 object-cover rounded-lg mt-2" />
                 )}
+              </div>
+              <button type="submit" disabled={isSavingNews} className="w-full bg-navy text-white py-3 rounded-lg font-medium hover:bg-navy-dark disabled:opacity-50 flex items-center justify-center gap-2">
+                {isSavingNews ? <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Saving...</> : editingNews ? "Update News/Event" : "Create News/Event"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Leadership Modal */}
+      {showLeadershipModal && (
+        <div className="fixed inset-0 bg-navy/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-lg">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-heading font-bold text-xl text-navy">{editingMember ? "Edit Team Member" : "Add Team Member"}</h3>
+              <button onClick={() => setShowLeadershipModal(false)} className="p-2 hover:bg-pale-gray rounded-lg"><X className="h-5 w-5" /></button>
+            </div>
+            <form onSubmit={handleSaveMember} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Name *</label>
+                <input type="text" value={leadershipForm.name} onChange={(e) => setLeadershipForm({ ...leadershipForm, name: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Role/Title *</label>
+                <input type="text" value={leadershipForm.role} onChange={(e) => setLeadershipForm({ ...leadershipForm, role: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Description *</label>
+                <textarea value={leadershipForm.description} onChange={(e) => setLeadershipForm({ ...leadershipForm, description: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" rows={3} required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Display Order</label>
+                <input type="number" value={leadershipForm.display_order} onChange={(e) => setLeadershipForm({ ...leadershipForm, display_order: parseInt(e.target.value) || 0 })} className="w-full px-4 py-2 border border-border rounded-lg" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">Photo (Optional)</label>
+                <input type="file" accept="image/*" onChange={(e) => setMemberImage(e.target.files?.[0] || null)} className="w-full px-4 py-2 border border-border rounded-lg" />
+                {(memberImage || editingMember?.image_url) && (
+                  <img src={memberImage ? URL.createObjectURL(memberImage) : editingMember?.image_url || ""} alt="Preview" className="w-32 h-32 object-cover rounded-lg mt-2" />
+                )}
+              </div>
+              <button type="submit" disabled={isSavingMember} className="w-full bg-navy text-white py-3 rounded-lg font-medium hover:bg-navy-dark disabled:opacity-50 flex items-center justify-center gap-2">
+                {isSavingMember ? <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Saving...</> : editingMember ? "Update Team Member" : "Add Team Member"}
               </button>
             </form>
           </div>

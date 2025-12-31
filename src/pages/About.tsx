@@ -93,9 +93,9 @@ const About = () => {
     return () => observer.disconnect();
   }, []);
 
-  const students = useCountUp(2000, 2000, statsVisible);
+  const students = useCountUp(15000, 2000, statsVisible);
   const faculty = useCountUp(100, 2000, statsVisible);
-  const years = useCountUp(15, 1500, statsVisible);
+  const years = useCountUp(25, 1500, statsVisible);
   const activities = useCountUp(50, 2000, statsVisible);
 
   const milestones = [
@@ -106,12 +106,33 @@ const About = () => {
     { year: "2024", title: "New Heights", description: "Expanded to 2000+ students with state-of-the-art facilities." },
   ];
 
-  const leadership = [
-    { name: "Dr. Ramesh Patel", role: "Founder & Chairman", image: null, description: "Visionary leader with 30+ years in education" },
-    { name: "Mrs. Kavita Shah", role: "Principal", image: null, description: "M.Ed, Ph.D in Educational Leadership" },
-    { name: "Mr. Amit Desai", role: "Vice Principal", image: null, description: "Specializes in curriculum development" },
-    { name: "Mrs. Priya Mehta", role: "Academic Director", image: null, description: "Expert in innovative teaching methodologies" },
-  ];
+  const [leadership, setLeadership] = useState<Array<{
+    id?: number;
+    name: string;
+    role: string;
+    image_url?: string | null;
+    description: string;
+  }>>([]);
+  const [leadersLoading, setLeadersLoading] = useState(true);
+
+  // Fetch leadership team
+  useEffect(() => {
+    const fetchLeadership = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/leadership');
+        if (response.ok) {
+          const data = await response.json();
+          setLeadership(data);
+        }
+      } catch (error) {
+        console.error('Error fetching leadership:', error);
+      } finally {
+        setLeadersLoading(false);
+      }
+    };
+    fetchLeadership();
+  }, []);
+
 
   const achievements = [
     { icon: Trophy, title: "100% Board Results", description: "Consistent 100% pass rate in board examinations" },
@@ -144,7 +165,7 @@ const About = () => {
                 Shaping Futures, <span className="text-sky-blue">Building Dreams</span>
               </h1>
               <p className="text-lg text-white/80 mb-8 max-w-2xl">
-                For over 15 years, we have been nurturing young minds with a perfect blend of 
+                For over 25 years, we have been nurturing young minds with a perfect blend of 
                 academic excellence, moral values, and holistic development at our state-of-the-art 
                 campus near Narendra Modi Stadium, Ahmedabad.
               </p>
@@ -153,10 +174,10 @@ const About = () => {
                   Schedule a Visit
                   <ArrowRight className="h-4 w-4 arrow-slide" />
                 </Link>
-                <button className="border-2 border-white text-white px-6 py-3 font-semibold text-sm rounded-full transition-all duration-300 hover:bg-white hover:text-navy inline-flex items-center gap-2">
+                {/* <button className="border-2 border-white text-white px-6 py-3 font-semibold text-sm rounded-full transition-all duration-300 hover:bg-white hover:text-navy inline-flex items-center gap-2">
                   <Play className="h-4 w-4" />
                   Watch Our Story
-                </button>
+                </button> */}
               </div>
             </div>
           </ScrollRevealSection>
@@ -169,7 +190,7 @@ const About = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
               <p className="text-4xl md:text-5xl font-heading font-bold text-sky-blue mb-2">{students}+</p>
-              <p className="text-muted-foreground font-medium">Happy Students</p>
+              <p className="text-muted-foreground font-medium">Proud Students</p>
             </div>
             <div className="text-center">
               <p className="text-4xl md:text-5xl font-heading font-bold text-green mb-2">{faculty}+</p>
@@ -196,14 +217,14 @@ const About = () => {
                 <span className="inline-block bg-pale-blue text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-4">
                   Our Story
                 </span>
-                <h2 className="section-title mb-6">A Legacy of Excellence Since 2008</h2>
+                <h2 className="section-title mb-6">A Legacy of Excellence Since 2002</h2>
                 <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
                   Swastik Education Campus was founded with a singular vision: to create an educational 
                   institution that combines the best of traditional values with modern teaching methodologies.
                 </p>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
                   What started as a small school with just 50 students has now grown into a comprehensive 
-                  educational campus serving over 2,000 students from Early Years to Grade 10. Our journey 
+                  educational campus serving over 15,000+ students from Early Years to Grade 10. Our journey 
                   has been marked by continuous innovation, unwavering commitment to quality, and a 
                   deep-rooted belief in the potential of every child.
                 </p>
@@ -404,24 +425,34 @@ const About = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-8">
-              {leadership.map((leader, index) => (
-                <div key={index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 text-center group">
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-sky-blue to-green flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform">
-                    {leader.image ? (
-                      <img src={leader.image} alt={leader.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="text-4xl font-bold text-white">
-                        {leader.name.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    )}
+            {leadersLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading team members...</p>
+              </div>
+            ) : leadership.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No team members found.</p>
+              </div>
+            ) : (
+              <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
+                {leadership.map((leader, index) => (
+                  <div key={leader.id || index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 text-center group w-full sm:w-72">
+                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-sky-blue to-green flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform">
+                      {leader.image_url ? (
+                        <img src={leader.image_url} alt={leader.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-4xl font-bold text-white">
+                          {leader.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="font-heading font-bold text-navy text-lg mb-1">{leader.name}</h3>
+                    <p className="text-sky-blue font-medium text-sm mb-2">{leader.role}</p>
+                    <p className="text-muted-foreground text-sm">{leader.description}</p>
                   </div>
-                  <h3 className="font-heading font-bold text-navy text-lg mb-1">{leader.name}</h3>
-                  <p className="text-sky-blue font-medium text-sm mb-2">{leader.role}</p>
-                  <p className="text-muted-foreground text-sm">{leader.description}</p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </ScrollRevealSection>
         </div>
       </section>
@@ -455,59 +486,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Principal's Message */}
-      <section className="py-20 bg-pale-gray">
-        <div className="container mx-auto px-4">
-          <ScrollRevealSection>
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center mb-12">
-                <span className="inline-block bg-white text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                  From the Principal's Desk
-                </span>
-                <h2 className="section-title">A Message of Welcome</h2>
-              </div>
-
-              <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-                <div className="grid md:grid-cols-5">
-                  {/* Principal Image */}
-                  <div className="md:col-span-2 bg-gradient-to-br from-navy to-navy-dark p-8 flex flex-col items-center justify-center text-center">
-                    <div className="w-40 h-40 rounded-full bg-white/10 border-4 border-white/30 flex items-center justify-center mb-4">
-                      <span className="text-5xl font-bold text-white">KS</span>
-                    </div>
-                    <h3 className="text-xl font-heading font-bold text-white mb-1">Mrs. Kavita Shah</h3>
-                    <p className="text-sky-blue font-medium">Principal</p>
-                    <p className="text-white/60 text-sm mt-2">M.Ed, Ph.D in Education</p>
-                  </div>
-
-                  {/* Message */}
-                  <div className="md:col-span-3 p-8 md:p-12 relative">
-                    <Quote className="absolute top-6 right-6 h-16 w-16 text-sky-blue/10" />
-                    <blockquote className="text-lg text-navy leading-relaxed mb-6 italic relative z-10">
-                      "At Swastik Education Campus, we believe that education is not merely about academic 
-                      achievement, but about developing well-rounded individuals who can contribute positively 
-                      to society. Our commitment to excellence, combined with our nurturing environment, ensures 
-                      that every child who walks through our doors receives the guidance and support they need 
-                      to flourish and achieve their highest potential."
-                    </blockquote>
-                    <p className="text-muted-foreground leading-relaxed">
-                      I invite you to visit our campus and experience firsthand the warm, inclusive atmosphere 
-                      that makes Swastik Education Campus a special place to learn and grow. Together, let us 
-                      shape the future of your child.
-                    </p>
-                    <div className="mt-6">
-                      <Link to="/contact" className="btn-sky">
-                        <Calendar className="h-4 w-4" />
-                        Schedule a Meeting
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ScrollRevealSection>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-navy to-navy-dark text-white">
         <div className="container mx-auto px-4">
@@ -527,6 +505,126 @@ const About = () => {
                 </Link>
                 <Link to="/contact" className="border-2 border-white text-white px-6 py-3 font-semibold text-sm rounded-full transition-all duration-300 hover:bg-white hover:text-navy inline-flex items-center gap-2">
                   Contact Us
+                </Link>
+              </div>
+            </div>
+          </ScrollRevealSection>
+        </div>
+      </section>
+
+      {/* Timeline Section */}
+      <section className="py-20 bg-gradient-to-br from-navy via-navy-dark to-navy text-white relative overflow-hidden">
+        <div className="absolute top-20 left-10 w-64 h-64 bg-orange/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-80 h-80 bg-sky-blue/10 rounded-full blur-3xl"></div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <ScrollRevealSection>
+            <div className="text-center mb-16">
+              <span className="inline-block bg-white/10 backdrop-blur-sm text-orange px-4 py-2 rounded-full text-sm font-semibold mb-4 border border-white/20">
+                Our Journey of Excellence
+              </span>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">🕰️ Timeline Overview</h2>
+              <p className="text-white/70 max-w-2xl mx-auto">
+                The trust of over 7000 parents every year
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <div className="relative">
+                {/* Timeline line */}
+                <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-orange via-sky-blue to-green md:-translate-x-px"></div>
+
+                {/* Timeline items */}
+                {[
+                  {
+                    year: "2002",
+                    title: "Swastik Education Campus",
+                    location: "Narendra Modi Stadium Road",
+                    description: "Our flagship campus established, marking the beginning of our educational journey",
+                  },
+                  {
+                    year: "2011",
+                    title: "Swastik Kidz – Branch 1 (Pre School)",
+                    location: "Tejendra, Vastral, Bors Road",
+                    description: "Expanding our reach to nurture young minds from early years",
+                  },
+                  {
+                    year: "2012",
+                    title: "Noble Education Campus",
+                    location: "Kathwada Road",
+                    description: "Strengthening our commitment to quality education",
+                  },
+                  {
+                    year: "2016",
+                    title: "Swastik Kidz – Branch 2 (Pre School)",
+                    location: "Madhav Bagh, Vastral, Bors Road",
+                    description: "Second pre-school branch to serve more families",
+                  },
+                  {
+                    year: "2018",
+                    title: "Swastik Education Campus",
+                    location: "Bapunagar, Chawk, Nava Naroda",
+                    description: "Another milestone in our expansion across Ahmedabad",
+                  },
+                  {
+                    year: "2021",
+                    title: "Swastik Kidz – Branch 3 (Pre School)",
+                    location: "Bhavani Shopping, Vastral",
+                    description: "Latest addition to our growing family of institutions",
+                  },
+                ].map((item, index) => (
+                  <div key={index} className={`relative flex items-center gap-6 mb-12 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                    {/* Year badge */}
+                    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-orange to-red-accent border-4 border-navy flex items-center justify-center flex-shrink-0 z-10">
+                      <span className="font-heading font-bold text-white text-sm">{item.year}</span>
+                    </div>
+
+                    {/* Content card */}
+                    <div className={`flex-1 ml-24 md:ml-0 ${index % 2 === 0 ? 'md:mr-auto md:pr-12' : 'md:ml-auto md:pl-12'} md:w-[calc(50%-2rem)]`}>
+                      <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all hover:scale-105 group">
+                        <h3 className="font-heading font-bold text-xl text-white mb-2 group-hover:text-orange transition-colors">
+                          {item.title}
+                        </h3>
+                        <div className="flex items-center gap-2 text-orange mb-3">
+                          <MapPin className="h-4 w-4" />
+                          <span className="text-sm font-medium">📍 {item.location}</span>
+                        </div>
+                        <p className="text-white/80 text-sm leading-relaxed">{item.description}</p>
+                        <div className="mt-3 text-xs text-white/60">🏫 Established Year: {item.year}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollRevealSection>
+        </div>
+      </section>
+
+      {/* Coming Soon Section */}
+      <section className="py-16 bg-gradient-to-r from-orange via-red-accent to-orange relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzBoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0tNCA0aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptLTQgNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <ScrollRevealSection>
+            <div className="text-center max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6 border-2 border-white/30">
+                <Calendar className="h-6 w-6 text-white animate-pulse" />
+                <span className="font-heading font-bold text-white text-lg">Coming Soon</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6 leading-tight">
+                Expanding to <span className="text-yellow-300">Hanspura</span>
+              </h2>
+              
+              <p className="text-white/90 text-lg md:text-xl mb-8 leading-relaxed">
+                We're thrilled to announce our upcoming campus in Hanspura! Stay tuned for more updates on this exciting new chapter in our journey of educational excellence.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link to="/contact" className="bg-white text-orange px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-100 transition-all duration-300 inline-flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-105">
+                  Get Notified
+                  <ArrowRight className="h-5 w-5" />
                 </Link>
               </div>
             </div>

@@ -26,7 +26,7 @@ const Footer = () => {
   return (
     <footer className="bg-navy text-white">
       {/* Newsletter Section */}
-      <div className="bg-navy-dark py-8">
+      {/* <div className="bg-navy-dark py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
@@ -47,7 +47,7 @@ const Footer = () => {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Footer */}
       <div className="py-16">
@@ -148,7 +148,7 @@ const Footer = () => {
                     <span>
                       Swastik Education Campus,<br />
                       Narendra Modi Stadium Road,<br />
-                      Motera, Ahmedabad
+                      Motera, Ahmedabad, Gujarat 380005
                     </span>
                   </div>
                 </li>

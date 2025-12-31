@@ -82,9 +82,9 @@ const Header = ({ onEnquireClick }: HeaderProps) => {
             <button onClick={onEnquireClick} className="btn-orange">
               Enquire Now
             </button>
-            <Link to="/admissions" className="btn-sky">
+            {/* <Link to="/admissions" className="btn-sky">
               Book a Tour
-            </Link>
+            </Link> */}
           </div>
 
           {/* Mobile Menu Button */}
