@@ -1,20 +1,21 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
-  Send, 
+import { Link, useNavigate } from "react-router-dom";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
   MessageCircle,
   ArrowRight,
   CheckCircle,
   Building,
   GraduationCap,
   Calendar,
-  HelpCircle
+  HelpCircle,
+  PhoneCall
 } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-campus.jpg";
 
 // Scroll reveal hook
@@ -62,6 +63,8 @@ const inquiryTypes = [
 ];
 
 const Contact = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -71,8 +74,25 @@ const Contact = () => {
     message: "",
   });
 
+  const isAdmissionReady = formData.inquiryType === "admission" && formData.medium;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // If admission inquiry with medium selected, redirect to admission form
+    if (isAdmissionReady) {
+      // Pass data via URL params
+      const params = new URLSearchParams({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        medium: formData.medium,
+      });
+      navigate(`/admission-form?${params.toString()}`);
+      return;
+    }
+    
+    // Otherwise, submit as regular contact message
     toast({
       title: "Message Sent!",
       description: "Thank you for your inquiry. We will get back to you shortly.",
@@ -249,24 +269,27 @@ const Contact = () => {
                         </select>
                       </div>
                     )}
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-navy mb-2">
-                        Message *
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                        rows={5}
-                        className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-all resize-none"
-                        placeholder="How can we help you?"
-                      />
-                    </div>
+                    {/* Message field - hide for admission inquiries */}
+                    {formData.inquiryType !== "admission" && (
+                      <div>
+                        <label htmlFor="message" className="block text-sm font-medium text-navy mb-2">
+                          Message *
+                        </label>
+                        <textarea
+                          id="message"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          required
+                          rows={5}
+                          className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-all resize-none"
+                          placeholder="How can we help you?"
+                        />
+                      </div>
+                    )}
                     <button type="submit" className="w-full md:w-auto bg-navy text-white px-8 py-4 rounded-xl font-semibold hover:bg-navy-dark transition-colors inline-flex items-center justify-center gap-2">
                       <Send className="h-5 w-5" />
-                      Send Message
+                      {isAdmissionReady ? "Apply for Admission" : "Send Message"}
                     </button>
                   </form>
                 </div>

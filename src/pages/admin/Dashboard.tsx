@@ -21,6 +21,10 @@ import {
   Clock,
   MapPin,
   Users,
+  User,
+  GraduationCap,
+  BookOpen,
+  Mail,
 } from "lucide-react";
 
 interface Enquiry {
@@ -29,10 +33,28 @@ interface Enquiry {
   email: string;
   phone: string;
   inquiry_type: string;
-  message: string;
-  status: "new" | "contacted" | "converted" | "closed";
-  medium?: string;
+  message?: string;
+  status: string;
   created_at: string;
+  medium?: string;
+  contact_number_2?: string;
+  admission_standard?: string;
+  stream_group?: string;
+  student_name?: string;
+  date_of_birth?: string;
+  residential_address?: string;
+  caste?: string;
+  subcaste?: string;
+  religion?: string;
+  last_school_name?: string;
+  board?: string;
+  last_school_district?: string;
+  last_school_state?: string;
+  last_standard?: string;
+  last_year?: string;
+  result_percentage?: string;
+  father_occupation?: string;
+  mother_occupation?: string;
 }
 
 interface GalleryPhoto {
@@ -80,6 +102,8 @@ const AdminDashboard = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [isExporting, setIsExporting] = useState(false);
+  const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+  const [showEnquiryModal, setShowEnquiryModal] = useState(false);
 
   // Gallery states
   const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
@@ -554,7 +578,14 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {filteredEnquiries.map((enquiry) => (
-                      <tr key={enquiry.id} className="border-b border-border hover:bg-pale-gray/50">
+                      <tr 
+                        key={enquiry.id} 
+                        onClick={() => {
+                          setSelectedEnquiry(enquiry);
+                          setShowEnquiryModal(true);
+                        }}
+                        className="border-b border-border hover:bg-pale-gray/50 cursor-pointer transition-colors"
+                      >
                         <td className="py-3 px-4 font-medium">{enquiry.name}</td>
                         <td className="py-3 px-4"><div className="text-sm"><p>{enquiry.email}</p><p className="text-muted-foreground">{enquiry.phone}</p></div></td>
                         <td className="py-3 px-4 capitalize">{enquiry.inquiry_type}</td>
@@ -568,7 +599,7 @@ const AdminDashboard = () => {
                           )}
                         </td>
                         <td className="py-3 px-4"><p className="max-w-[200px] truncate text-sm text-muted-foreground">{enquiry.message || "-"}</p></td>
-                        <td className="py-3 px-4">
+                        <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
                           <select value={enquiry.status} onChange={(e) => handleStatusChange(enquiry.id, e.target.value)} className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(enquiry.status)} border-0 cursor-pointer`}>
                             <option value="new">New</option>
                             <option value="contacted">Contacted</option>
@@ -577,7 +608,7 @@ const AdminDashboard = () => {
                           </select>
                         </td>
                         <td className="py-3 px-4 text-sm text-muted-foreground">{new Date(enquiry.created_at).toLocaleDateString()}</td>
-                        <td className="py-3 px-4">
+                        <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
                           <button onClick={() => handleDeleteEnquiry(enquiry.id)} className="text-red-accent hover:bg-red-accent/10 p-2 rounded-lg"><Trash2 className="h-4 w-4" /></button>
                         </td>
                       </tr>
@@ -865,6 +896,122 @@ const AdminDashboard = () => {
                 {isSavingMember ? <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Saving...</> : editingMember ? "Update Team Member" : "Add Team Member"}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Enquiry Detail Modal */}
+      {showEnquiryModal && selectedEnquiry && (
+        <div className="fixed inset-0 z-50 bg-navy/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" onClick={() => setShowEnquiryModal(false)}>
+          <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto my-8" onClick={(e) => e.stopPropagation()}>
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-navy to-navy-dark text-white p-6 sticky top-0 z-10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-heading font-bold">Enquiry Details</h3>
+                  <p className="text-white/70 text-sm mt-1">ID #{selectedEnquiry.id} • {new Date(selectedEnquiry.created_at).toLocaleString()}</p>
+                </div>
+                <button onClick={() => setShowEnquiryModal(false)} className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-6">
+              {/* Contact Information */}
+              <div className="bg-pale-gray rounded-xl p-5">
+                <h4 className="font-heading font-bold text-navy text-lg mb-4 flex items-center gap-2">
+                  <div className="w-8 h-8 bg-sky-blue/10 rounded-full flex items-center justify-center"><Mail className="h-4 w-4 text-sky-blue" /></div>
+                  Contact Information
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div><p className="text-sm text-muted-foreground mb-1">Name</p><p className="font-medium text-navy">{selectedEnquiry.name}</p></div>
+                  <div><p className="text-sm text-muted-foreground mb-1">Email</p><p className="font-medium text-navy">{selectedEnquiry.email}</p></div>
+                  <div><p className="text-sm text-muted-foreground mb-1">Phone</p><p className="font-medium text-navy">{selectedEnquiry.phone}</p></div>
+                  {selectedEnquiry.contact_number_2 && (<div><p className="text-sm text-muted-foreground mb-1">Alternate Phone</p><p className="font-medium text-navy">{selectedEnquiry.contact_number_2}</p></div>)}
+                  <div><p className="text-sm text-muted-foreground mb-1">Inquiry Type</p><p className="font-medium text-navy capitalize">{selectedEnquiry.inquiry_type}</p></div>
+                  {selectedEnquiry.medium && (<div><p className="text-sm text-muted-foreground mb-1">Preferred Medium</p><span className="inline-block px-3 py-1 bg-sky-blue/10 text-sky-blue rounded-full text-sm font-medium capitalize">{selectedEnquiry.medium}</span></div>)}
+                </div>
+                {selectedEnquiry.message && (
+                  <div className="mt-4 pt-4 border-t border-border"><p className="text-sm text-muted-foreground mb-1">Message</p><p className="text-navy">{selectedEnquiry.message}</p></div>
+                )}
+              </div>
+
+              {/* Admission Details - Only show if admission inquiry */}
+              {selectedEnquiry.inquiry_type === 'admission' && (selectedEnquiry.admission_standard || selectedEnquiry.stream_group) && (
+                <div className="bg-pale-blue rounded-xl p-5">
+                  <h4 className="font-heading font-bold text-navy text-lg mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-green/10 rounded-full flex items-center justify-center"><GraduationCap className="h-4 w-4 text-green" /></div>
+                    Admission Details
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {selectedEnquiry.admission_standard && (<div><p className="text-sm text-muted-foreground mb-1">Admission Standard</p><p className="font-medium text-navy">{selectedEnquiry.admission_standard}</p></div>)}
+                    {selectedEnquiry.stream_group && (<div><p className="text-sm text-muted-foreground mb-1">Stream/Group</p><p className="font-medium text-navy">{selectedEnquiry.stream_group}</p></div>)}
+                  </div>
+                </div>
+              )}
+
+              {/* Student Information */}
+              {selectedEnquiry.student_name && (
+                <div className="bg-orange/5 rounded-xl p-5">
+                  <h4 className="font-heading font-bold text-navy text-lg mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-orange/10 rounded-full flex items-center justify-center"><User className="h-4 w-4 text-orange" /></div>
+                    Student Information
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div><p className="text-sm text-muted-foreground mb-1">Student Name</p><p className="font-medium text-navy">{selectedEnquiry.student_name}</p></div>
+                    {selectedEnquiry.date_of_birth && (<div><p className="text-sm text-muted-foreground mb-1">Date of Birth</p><p className="font-medium text-navy">{new Date(selectedEnquiry.date_of_birth).toLocaleDateString()}</p></div>)}
+                    {selectedEnquiry.religion && (<div><p className="text-sm text-muted-foreground mb-1">Religion</p><p className="font-medium text-navy">{selectedEnquiry.religion}</p></div>)}
+                    {selectedEnquiry.caste && (<div><p className="text-sm text-muted-foreground mb-1">Caste</p><p className="font-medium text-navy">{selectedEnquiry.caste}</p></div>)}
+                    {selectedEnquiry.subcaste && (<div><p className="text-sm text-muted-foreground mb-1">Sub-caste</p><p className="font-medium text-navy">{selectedEnquiry.subcaste}</p></div>)}
+                  </div>
+                  {selectedEnquiry.residential_address && (
+                    <div className="mt-4 pt-4 border-t border-border"><p className="text-sm text-muted-foreground mb-1">Residential Address</p><p className="text-navy">{selectedEnquiry.residential_address}</p></div>
+                  )}
+                </div>
+              )}
+
+              {/* Previous Education */}
+              {selectedEnquiry.last_school_name && (
+                <div className="bg-sky-blue/5 rounded-xl p-5">
+                  <h4 className="font-heading font-bold text-navy text-lg mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-sky-blue/10 rounded-full flex items-center justify-center"><BookOpen className="h-4 w-4 text-sky-blue" /></div>
+                    Previous Education
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="md:col-span-2"><p className="text-sm text-muted-foreground mb-1">Last School</p><p className="font-medium text-navy">{selectedEnquiry.last_school_name}</p></div>
+                    {selectedEnquiry.board && (<div><p className="text-sm text-muted-foreground mb-1">Board</p><p className="font-medium text-navy">{selectedEnquiry.board}</p></div>)}
+                    {selectedEnquiry.last_school_district && (<div><p className="text-sm text-muted-foreground mb-1">District</p><p className="font-medium text-navy">{selectedEnquiry.last_school_district}</p></div>)}
+                    {selectedEnquiry.last_school_state && (<div><p className="text-sm text-muted-foreground mb-1">State</p><p className="font-medium text-navy">{selectedEnquiry.last_school_state}</p></div>)}
+                    {selectedEnquiry.last_standard && (<div><p className="text-sm text-muted-foreground mb-1">Last Standard</p><p className="font-medium text-navy">{selectedEnquiry.last_standard}</p></div>)}
+                    {selectedEnquiry.last_year && (<div><p className="text-sm text-muted-foreground mb-1">Year</p><p className="font-medium text-navy">{selectedEnquiry.last_year}</p></div>)}
+                    {selectedEnquiry.result_percentage && (<div><p className="text-sm text-muted-foreground mb-1">Result</p><p className="font-medium text-navy">{selectedEnquiry.result_percentage}</p></div>)}
+                  </div>
+                </div>
+              )}
+
+              {/* Parent Details */}
+              {(selectedEnquiry.father_occupation || selectedEnquiry.mother_occupation) && (
+                <div className="bg-green/5 rounded-xl p-5">
+                  <h4 className="font-heading font-bold text-navy text-lg mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-green/10 rounded-full flex items-center justify-center"><Users className="h-4 w-4 text-green" /></div>
+                    Parent Details
+                  </h4>
+                   <div className="grid md:grid-cols-2 gap-4">
+                    {selectedEnquiry.father_occupation && (<div><p className="text-sm text-muted-foreground mb-1">Father's Occupation</p><p className="font-medium text-navy">{selectedEnquiry.father_occupation}</p></div>)}
+                    {selectedEnquiry.mother_occupation && (<div><p className="text-sm text-muted-foreground mb-1">Mother's Occupation</p><p className="font-medium text-navy">{selectedEnquiry.mother_occupation}</p></div>)}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="bg-pale-gray p-6 sticky bottom-0 flex justify-end gap-3">
+              <button onClick={() => setShowEnquiryModal(false)} className="px-6 py-2 bg-white border border-border text-navy rounded-lg font-medium hover:bg-pale-gray transition-colors">
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

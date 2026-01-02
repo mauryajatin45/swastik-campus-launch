@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Send, CheckCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { enquiryAPI } from "@/services/api";
 
 const AdmissionForm = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     // Parent/Contact Info
@@ -17,6 +18,7 @@ const AdmissionForm = () => {
     // Admission Details
     admission_standard: "",
     stream_group: "",
+    medium: "",
     
     // Student Information
     student_name: "",
@@ -40,6 +42,30 @@ const AdmissionForm = () => {
     mother_occupation: "",
   });
 
+  // Pre-fill form data from URL params
+  useEffect(() => {
+    const name = searchParams.get("name");
+    const email = searchParams.get("email");
+    const phone = searchParams.get("phone");
+    const medium = searchParams.get("medium");
+
+    if (name || email || phone || medium) {
+      setFormData(prev => ({
+        ...prev,
+        name: name || "",
+        email: email || "",
+        phone: phone || "",
+        medium: medium || "",
+      }));
+      
+      // Show toast to notify user
+      toast({
+        title: "Form Pre-filled",
+        description: "Your contact details have been automatically filled. Please complete the remaining fields.",
+      });
+    }
+  }, [searchParams]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -62,7 +88,7 @@ const AdmissionForm = () => {
       // Reset form
       setFormData({
         name: "", email: "", phone: "", contact_number_2: "",
-        admission_standard: "", stream_group: "",
+        admission_standard: "", stream_group: "", medium: "",
         student_name: "", date_of_birth: "", residential_address: "",
         caste: "", subcaste: "", religion: "",
         last_school_name: "", board: "", last_school_district: "",
@@ -138,6 +164,22 @@ const AdmissionForm = () => {
                   <option value="Grade 8">Grade 8</option>
                   <option value="Grade 9">Grade 9</option>
                   <option value="Grade 10">Grade 10</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-navy mb-2">
+                  Preferred Medium *
+                </label>
+                <select
+                  name="medium"
+                  value={formData.medium}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy"
+                  required
+                >
+                  <option value="">Select Medium</option>
+                  <option value="english">English Medium</option>
+                  <option value="gujarati">Gujarati Medium</option>
                 </select>
               </div>
               <div>

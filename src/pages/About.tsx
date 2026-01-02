@@ -99,11 +99,13 @@ const About = () => {
   const activities = useCountUp(50, 2000, statsVisible);
 
   const milestones = [
-    { year: "2008", title: "Foundation", description: "Swastik Education Campus was established with a vision to provide quality education." },
-    { year: "2012", title: "Expansion", description: "Added secondary school wing and modern science laboratories." },
-    { year: "2016", title: "Recognition", description: "Received excellence award from Gujarat State Education Board." },
-    { year: "2020", title: "Digital Era", description: "Launched smart classrooms and online learning platforms." },
-    { year: "2024", title: "New Heights", description: "Expanded to 2000+ students with state-of-the-art facilities." },
+    { year: "2002", title: "Swastik Education Campus", description: "Our flagship campus established at Narendra Modi Stadium Road, marking the beginning of our educational journey." },
+    { year: "2011", title: "Swastik Kidz – Branch 1", description: "First pre-school branch opened at Tejendra, Vastral, Bors Road, expanding our reach to nurture young minds from early years." },
+    { year: "2012", title: "Noble Education Campus", description: "Established at Kathwada Road, strengthening our commitment to quality education across Ahmedabad." },
+    { year: "2016", title: "Swastik Kidz – Branch 2", description: "Second pre-school branch at Madhav Bagh, Vastral, Bors Road, serving more families in the community." },
+    { year: "2018", title: "Swastik Education Campus", description: "New campus opened at Bapunagar, Chawk, Nava Naroda, another milestone in our expansion." },
+    { year: "2021", title: "Swastik Kidz – Branch 3", description: "Latest addition at Bhavani Shopping, Vastral, completing our network of 6 institutions across Ahmedabad." },
+    { year: "2027", title: "Coming Soon in Hanspura", description: "Exciting new campus expansion coming to Hanspura! Stay tuned for updates on this next chapter of growth." },
   ];
 
   const [leadership, setLeadership] = useState<Array<{
@@ -219,26 +221,56 @@ const About = () => {
                 </span>
                 <h2 className="section-title mb-6">A Legacy of Excellence Since 2002</h2>
                 <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                  Swastik Education Campus was founded with a singular vision: to create an educational 
+                  Swastik Education Campus was founded in 2002 with a singular vision: to create an educational 
                   institution that combines the best of traditional values with modern teaching methodologies.
                 </p>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  What started as a small school with just 50 students has now grown into a comprehensive 
-                  educational campus serving over 15,000+ students from Early Years to Grade 10. Our journey 
-                  has been marked by continuous innovation, unwavering commitment to quality, and a 
-                  deep-rooted belief in the potential of every child.
+                  What started as a single campus has now grown into a comprehensive educational network with 
+                  6 institutions across Ahmedabad, serving over 7,000 students from Early Years to Grade 10.
                 </p>
+                
+                {/* Timeline of Growth */}
+                <div className="bg-pale-gray rounded-2xl p-6 mb-6">
+                  <h3 className="font-heading font-bold text-navy text-lg mb-4">Our Journey of Growth</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <span className="font-bold text-sky-blue">2002:</span>
+                      <span className="text-muted-foreground">Swastik Education Campus, Narendra Modi Stadium Road</span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="font-bold text-sky-blue">2011:</span>
+                      <span className="text-muted-foreground">Swastik Kidz Branch 1, Tejendra, Vastral</span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="font-bold text-sky-blue">2012:</span>
+                      <span className="text-muted-foreground">Noble Education Campus, Kathwada Road</span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="font-bold text-sky-blue">2016:</span>
+                      <span className="text-muted-foreground">Swastik Kidz Branch 2, Madhav Bagh, Vastral</span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="font-bold text-sky-blue">2018:</span>
+                      <span className="text-muted-foreground">Swastik Education Campus, Bapunagar, Nava Naroda</span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="font-bold text-sky-blue">2021:</span>
+                      <span className="text-muted-foreground">Swastik Kidz Branch 3, Bhavani Shopping, Vastral</span>
+                    </div>
+                  </div>
+                </div>
+
                 <p className="text-muted-foreground mb-8 leading-relaxed">
-                  Located near the iconic Narendra Modi Stadium in Ahmedabad, our campus boasts 
+                  Located near the iconic Narendra Modi Stadium in Ahmedabad, our campuses boast 
                   state-of-the-art facilities, including smart classrooms, advanced science labs, 
                   sports grounds, and dedicated spaces for arts and cultural activities.
                 </p>
                 
                 <div className="flex flex-wrap gap-4">
                   {[
-                    { icon: MapPin, text: "Prime Location" },
+                    { icon: MapPin, text: "6 Campuses" },
                     { icon: BookOpen, text: "Modern Curriculum" },
-                    { icon: Users, text: "Expert Faculty" },
+                    { icon: Users, text: "7000+ Students" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2 bg-pale-gray px-4 py-2 rounded-full">
                       <item.icon className="h-4 w-4 text-sky-blue" />
@@ -289,19 +321,24 @@ const About = () => {
                 {/* Timeline line */}
                 <div className="absolute left-[7px] md:left-1/2 md:-translate-x-1/2 h-full w-1 bg-gradient-to-b from-sky-blue via-green to-orange rounded-full"></div>
                 
-                {milestones.map((milestone, index) => (
-                  <div key={index} className={`relative flex items-center mb-12 justify-end ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}>
-                    <div className={`w-10/12 md:w-5/12 pl-0 text-left ${index % 2 === 0 ? 'md:pr-8 md:text-right md:pl-0' : 'md:pl-8 md:text-left'}`}>
-                      <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                        <span className="text-sky-blue font-bold text-lg">{milestone.year}</span>
-                        <h3 className="font-heading font-bold text-navy text-xl mt-2 mb-2">{milestone.title}</h3>
-                        <p className="text-muted-foreground text-sm">{milestone.description}</p>
+                {milestones.map((milestone, index) => {
+                  const isLast = index === milestones.length - 1;
+                  return (
+                    <div key={index} className={`relative flex items-center mb-12 ${isLast ? 'justify-end md:justify-center' : `justify-end ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}`}>
+                      <div className={`${isLast ? 'w-10/12 md:w-6/12 pl-0 text-left md:text-center' : `w-10/12 md:w-5/12 pl-0 text-left ${index % 2 === 0 ? 'md:pr-8 md:text-right md:pl-0' : 'md:pl-8 md:text-left'}`}`}>
+                        <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                          <span className="text-sky-blue font-bold text-lg">{milestone.year}</span>
+                          <h3 className="font-heading font-bold text-navy text-xl mt-2 mb-2">{milestone.title}</h3>
+                          <p className="text-muted-foreground text-sm">{milestone.description}</p>
+                        </div>
                       </div>
+                      {/* Center dot - hide for last item */}
+                      {!isLast && (
+                        <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-4 h-4 bg-white border-4 border-sky-blue rounded-full z-10"></div>
+                      )}
                     </div>
-                    {/* Center dot */}
-                    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-4 h-4 bg-white border-4 border-sky-blue rounded-full z-10"></div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </ScrollRevealSection>
@@ -506,95 +543,6 @@ const About = () => {
                 <Link to="/contact" className="border-2 border-white text-white px-6 py-3 font-semibold text-sm rounded-full transition-all duration-300 hover:bg-white hover:text-navy inline-flex items-center gap-2">
                   Contact Us
                 </Link>
-              </div>
-            </div>
-          </ScrollRevealSection>
-        </div>
-      </section>
-
-      {/* Timeline Section */}
-      <section className="py-20 bg-gradient-to-br from-navy via-navy-dark to-navy text-white relative overflow-hidden">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-orange/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-sky-blue/10 rounded-full blur-3xl"></div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <ScrollRevealSection>
-            <div className="text-center mb-16">
-              <span className="inline-block bg-white/10 backdrop-blur-sm text-orange px-4 py-2 rounded-full text-sm font-semibold mb-4 border border-white/20">
-                Our Journey of Excellence
-              </span>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">🕰️ Timeline Overview</h2>
-              <p className="text-white/70 max-w-2xl mx-auto">
-                The trust of over 7000 parents every year
-              </p>
-            </div>
-
-            <div className="max-w-4xl mx-auto">
-              <div className="relative">
-                {/* Timeline line */}
-                <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-orange via-sky-blue to-green md:-translate-x-px"></div>
-
-                {/* Timeline items */}
-                {[
-                  {
-                    year: "2002",
-                    title: "Swastik Education Campus",
-                    location: "Narendra Modi Stadium Road",
-                    description: "Our flagship campus established, marking the beginning of our educational journey",
-                  },
-                  {
-                    year: "2011",
-                    title: "Swastik Kidz – Branch 1 (Pre School)",
-                    location: "Tejendra, Vastral, Bors Road",
-                    description: "Expanding our reach to nurture young minds from early years",
-                  },
-                  {
-                    year: "2012",
-                    title: "Noble Education Campus",
-                    location: "Kathwada Road",
-                    description: "Strengthening our commitment to quality education",
-                  },
-                  {
-                    year: "2016",
-                    title: "Swastik Kidz – Branch 2 (Pre School)",
-                    location: "Madhav Bagh, Vastral, Bors Road",
-                    description: "Second pre-school branch to serve more families",
-                  },
-                  {
-                    year: "2018",
-                    title: "Swastik Education Campus",
-                    location: "Bapunagar, Chawk, Nava Naroda",
-                    description: "Another milestone in our expansion across Ahmedabad",
-                  },
-                  {
-                    year: "2021",
-                    title: "Swastik Kidz – Branch 3 (Pre School)",
-                    location: "Bhavani Shopping, Vastral",
-                    description: "Latest addition to our growing family of institutions",
-                  },
-                ].map((item, index) => (
-                  <div key={index} className={`relative flex items-center gap-6 mb-12 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                    {/* Year badge */}
-                    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-16 h-16 rounded-full bg-gradient-to-br from-orange to-red-accent border-4 border-navy flex items-center justify-center flex-shrink-0 z-10">
-                      <span className="font-heading font-bold text-white text-sm">{item.year}</span>
-                    </div>
-
-                    {/* Content card */}
-                    <div className={`flex-1 ml-24 md:ml-0 ${index % 2 === 0 ? 'md:mr-auto md:pr-12' : 'md:ml-auto md:pl-12'} md:w-[calc(50%-2rem)]`}>
-                      <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all hover:scale-105 group">
-                        <h3 className="font-heading font-bold text-xl text-white mb-2 group-hover:text-orange transition-colors">
-                          {item.title}
-                        </h3>
-                        <div className="flex items-center gap-2 text-orange mb-3">
-                          <MapPin className="h-4 w-4" />
-                          <span className="text-sm font-medium">📍 {item.location}</span>
-                        </div>
-                        <p className="text-white/80 text-sm leading-relaxed">{item.description}</p>
-                        <div className="mt-3 text-xs text-white/60">🏫 Established Year: {item.year}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
           </ScrollRevealSection>
