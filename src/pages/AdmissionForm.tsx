@@ -163,7 +163,7 @@ const AdmissionForm = () => {
                   <option value="Grade 7">Grade 7</option>
                   <option value="Grade 8">Grade 8</option>
                   <option value="Grade 9">Grade 9</option>
-                  <option value="Grade 10">Grade 10</option>
+                  <option value="Grade 12">Grade 12</option>
                 </select>
               </div>
               <div>
@@ -309,7 +309,7 @@ const AdmissionForm = () => {
                   className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy"
                 >
                   <option value="">Select Board</option>
-                  <option value="GSEB">GSEB</option>
+                  <option value="GSHSEB">GSHSEB</option>
                   <option value="CBSE">CBSE</option>
                   <option value="Other">Other</option>
                 </select>

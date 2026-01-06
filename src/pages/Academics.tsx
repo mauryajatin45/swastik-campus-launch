@@ -97,7 +97,7 @@ const levels = [
     description: "Building strong academic foundations while nurturing creativity, critical thinking, and a love for lifelong learning.",
     highlights: [
       "Grade 1 - Minimum 6 years completed by June 1st",
-      "Grade 2 and above - As per GSEB age criteria",
+      "Grade 2 and above - As per GSHSEB age criteria",
       "Strong Academic Foundation",
       "Holistic Child Development",
       "Language & Communication Skills",
@@ -234,7 +234,7 @@ const Academics = () => {
                 <Award className="h-7 w-7" />
               </div>
               <div className="text-left">
-                <h3 className="font-heading font-bold text-xl">GSEB Affiliated</h3>
+                <h3 className="font-heading font-bold text-xl">GSHSEB Affiliated</h3>
                 <p className="text-white/90 text-sm">State Board</p>
               </div>
             </div>

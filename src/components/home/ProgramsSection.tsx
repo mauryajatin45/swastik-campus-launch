@@ -25,7 +25,7 @@ const programs = [
     description: "Developing core academic skills alongside creativity and critical thinking.",
     eligibility: [
       { grade: "Grade 1", age: "6+ years by June 1st" },
-      { grade: "Grade 2+", age: "As per GSEB criteria" },
+      { grade: "Grade 2+", age: "As per GSHSEB criteria" },
     ],
     note: null,
   },
@@ -36,7 +36,7 @@ const programs = [
     badge: "bg-orange/10 text-orange",
     description: "Preparing students for higher education and board examinations.",
     eligibility: [
-      { grade: "All Grades", age: "As per GSEB age criteria" },
+      { grade: "All Grades", age: "As per GSHSEB age criteria" },
     ],
     note: null,
   },

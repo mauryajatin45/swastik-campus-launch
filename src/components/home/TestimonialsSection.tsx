@@ -83,7 +83,7 @@ const testimonials = [
   {
     quote: "We are grateful for the positive impact Swastik has had on our son. His academic performance has improved significantly.",
     author: "Manish Gupta",
-    role: "Parent of Grade 10 Student",
+    role: "Parent of Grade 12 Student",
     image: null,
     rating: 5,
   },
