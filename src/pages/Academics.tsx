@@ -81,6 +81,11 @@ const levels = [
       "Focus on motor skills and social development",
     ],
     subjects: ["English", "Hindi", "Gujarati", "Numbers", "Art & Craft", "Music", "Physical Play"],
+    documents: [
+      "Birth Certificate",
+      "Child Passport Size Photo",
+      "Child Aadhaar Card Xerox",
+    ],
   },
   {
     id: "primary",
@@ -93,30 +98,57 @@ const levels = [
     highlights: [
       "Grade 1 - Minimum 6 years completed by June 1st",
       "Grade 2 and above - As per GSEB age criteria",
-      "Comprehensive curriculum in English and Gujarati Medium",
-      "Strong emphasis on mathematics and science",
-      "Computer education and digital literacy",
-      "Regular assessments and parent feedback",
+      "Strong Academic Foundation",
+      "Holistic Child Development",
+      "Language & Communication Skills",
+      "Numeracy & Logical Thinking",
+      "Experiential & Activity-Based Learning",
+      "Co-Curricular & Creative Development",
+      "Digital & 21st-Century Skills",
+      "Sports & Physical Education",
+      "Values & Life Skills Education",
+      "Trained & Caring Educators",
+      "Continuous & Comprehensive Assessment",
     ],
     subjects: ["English", "Hindi", "Gujarati", "Mathematics", "Science", "Social Studies", "Computer", "Art", "Music", "PE"],
+    documents: [
+      "Birth Certificate and its Xerox",
+      "Child Passport Size Photo",
+      "Aadhaar Card Xerox",
+      "Leaving Certificate of Last School and ID Number",
+    ],
   },
   {
     id: "secondary",
-    title: "Secondary School",
-    grades: "Grades 6-10",
+    title: "Secondary & Higher Secondary School",
+    grades: "Grades 6-12",
     icon: GraduationCap,
     color: "from-orange to-red-accent",
     bgColor: "bg-orange",
     description: "Preparing students for academic excellence and board examinations with rigorous curriculum and personalized guidance.",
     highlights: [
-      "Admission as per GSEB age criteria",
-      "GSEB curriculum with both mediums available",
-      "Specialized subject streams in higher grades",
-      "Board examination preparation and mock tests",
-      "Career guidance and counseling",
-      "Competitive exam preparation (JEE, NEET foundations)",
+      "Admission as per GSHSEB age criteria",
+      "GSHSEB curriculum with both mediums available",
+      "Strong Academic Framework",
+      "Critical Thinking & Concept Mastery",
+      "Communication & Language Proficiency",
+      "Digital Literacy & Skill Development",
+      "Continuous Assessment & Exam Readiness",
+      "Stream-Focused Academic Excellence",
+      "Advanced Practical & Laboratory Learning",
+      "Competitive Exam Orientation",
+      "Career Guidance & Counseling",
+      "Assessment & Performance Tracking",
+      "Values, Discipline and Leadership",
     ],
     subjects: ["English", "Hindi/Sanskrit", "Gujarati", "Mathematics", "Science", "Social Science", "Computer", "Physical Education"],
+    documents: [
+      "Leaving Certificate of Last School",
+      "Last Result Copy",
+      "Student Passport Size Photo",
+      "Student Aadhaar Card Xerox",
+      "Last School Issued ID Number",
+    ],
   },
 ];
 
@@ -130,19 +162,23 @@ const facilities = [
 ];
 
 const teachingMethods = [
-  { icon: Brain, title: "Conceptual Learning", description: "Focus on understanding concepts rather than rote memorization" },
-  { icon: Users, title: "Collaborative Projects", description: "Team-based learning to develop social and communication skills" },
-  { icon: Monitor, title: "Smart Classes", description: "Interactive digital boards and multimedia content" },
-  { icon: Target, title: "Activity-Based", description: "Learning through hands-on activities and experiments" },
+  { icon: BookOpen, title: "Concept-Based Learning", description: "Focus on deep understanding of concepts rather than rote memorization" },
+  { icon: Target, title: "Activity & Experiential Learning", description: "Learning through hands-on activities, experiments, projects, and models. Real-life connections to academic concepts" },
+  { icon: Monitor, title: "Technology-Enabled Learning", description: "Smart classrooms with audio-visual teaching aids" },
+  { icon: FlaskConical, title: "Practical & Application-Oriented Approach", description: "Well-equipped laboratories for Science and Computer education" },
+  { icon: Brain, title: "Critical Thinking & Problem Solving", description: "Prepares students for competitive exams and future challenges" },
+  { icon: CheckCircle, title: "Continuous Assessment & Feedback", description: "Regular assessments to track learning progress" },
 ];
 
 const extracurricular = [
-  { icon: Palette, title: "Arts & Crafts", description: "Painting, drawing, pottery, and creative expression", color: "bg-orange" },
-  { icon: Music, title: "Music & Dance", description: "Vocal, instrumental, classical and western dance", color: "bg-sky-blue" },
-  { icon: Trophy, title: "Sports", description: "Cricket, football, basketball, athletics, yoga", color: "bg-green" },
-  { icon: Code, title: "Coding Club", description: "Programming, robotics, and app development", color: "bg-red-accent" },
-  { icon: Theater, title: "Drama Club", description: "Theatre, skits, and public speaking", color: "bg-orange" },
-  { icon: Languages, title: "Language Club", description: "Debate, elocution, and creative writing", color: "bg-sky-blue" },
+  { icon: Palette, title: "Arts & Cultural Activities", description: "Painting, drawing, pottery, music, dance, and creative expression", color: "bg-orange" },
+  { icon: Trophy, title: "Sports & Physical Activities", description: "Cricket, football, basketball, athletics, yoga, and physical fitness", color: "bg-green" },
+  { icon: BookOpen, title: "Literary & Language Activities", description: "Quiz competitions and reading programs", color: "bg-sky-blue" },
+  { icon: FlaskConical, title: "Science, Math & Innovation Clubs", description: "STEM activities, experiments, and innovation projects", color: "bg-red-accent" },
+  { icon: Code, title: "Technology & Skill-Based Activities", description: "Coding, robotics, app development, and digital skills", color: "bg-orange" },
+  { icon: Target, title: "Social, Environmental & Life Skills Activities", description: "Community service, sustainability projects, and life skills development", color: "bg-green" },
+  { icon: Award, title: "Competitions & Events", description: "Inter-school competitions, exhibitions, and talent showcases", color: "bg-sky-blue" },
+  { icon: Users, title: "Leadership Opportunities", description: "Student council, mentorship programs, and leadership training", color: "bg-red-accent" },
 ];
 
 const Academics = () => {
@@ -170,11 +206,10 @@ const Academics = () => {
                 Academics
               </span> */}
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white leading-tight mb-6">
-                Programs & <span className="text-sky-blue">Curriculum</span>
+                Our Commitment to <span className="text-sky-blue">Academic Excellence</span>
               </h1>
               <p className="text-lg text-white/80 mb-8 max-w-2xl">
-                A comprehensive educational journey from early years through secondary education, 
-                offered in both English and Gujarati mediums with a focus on holistic development.
+                We are committed to academic excellence through a well-structured curriculum, experienced teachers, and a supportive learning environment that helps students achieve strong academic outcomes and lifelong success.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/admissions" className="btn-orange group">
@@ -193,34 +228,24 @@ const Academics = () => {
       {/* Medium Options Banner */}
       <section className="py-8 bg-gradient-to-r from-sky-blue to-green text-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 text-center">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                <Globe className="h-6 w-6" />
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-center max-w-4xl mx-auto">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
+                <Award className="h-7 w-7" />
               </div>
               <div className="text-left">
-                <h3 className="font-heading font-bold text-lg">English Medium</h3>
-                <p className="text-white/80 text-sm">Complete curriculum in English</p>
+                <h3 className="font-heading font-bold text-xl">GSEB Affiliated</h3>
+                <p className="text-white/90 text-sm">State Board</p>
               </div>
             </div>
-            <div className="w-px h-12 bg-white/30 hidden md:block" />
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                <BookOpen className="h-6 w-6" />
+            <div className="w-px h-16 bg-white/30 hidden md:block" />
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
+                <BookOpen className="h-7 w-7" />
               </div>
               <div className="text-left">
-                <h3 className="font-heading font-bold text-lg">Gujarati Medium</h3>
-                <p className="text-white/80 text-sm">ગુજરાતી માધ્યમમાં સંપૂર્ણ અભ્યાસક્રમ</p>
-              </div>
-            </div>
-            <div className="w-px h-12 bg-white/30 hidden md:block" />
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                <Award className="h-6 w-6" />
-              </div>
-              <div className="text-left">
-                <h3 className="font-heading font-bold text-lg">GSEB Affiliated</h3>
-                <p className="text-white/80 text-sm">Gujarat State Education Board</p>
+                <h3 className="font-heading font-bold text-xl">English/Gujarati Medium</h3>
+                <p className="text-white/90 text-sm">NCERT Based Curriculum</p>
               </div>
             </div>
           </div>
@@ -295,34 +320,25 @@ const Academics = () => {
                     </Link>
                   </div>
 
-                  {/* Right - Subjects */}
+                  {/* Right - Requirements */}
                   <div className={`p-8 lg:p-12 bg-gradient-to-br ${currentLevel.color}`}>
-                    <h4 className="font-heading font-bold text-white text-xl mb-6">Subjects Offered</h4>
-                    <div className="grid grid-cols-2 gap-4">
-                      {currentLevel.subjects.map((subject, index) => (
-                        <div key={index} className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-3 text-white font-medium text-sm">
-                          {subject}
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-8 bg-white/20 backdrop-blur-sm rounded-2xl p-6">
-                      <h5 className="font-heading font-bold text-white mb-4">Quick Facts</h5>
+                    <h4 className="font-heading font-bold text-white text-xl mb-6">Requirements</h4>
+                    
+                    {currentLevel.documents ? (
                       <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-white/90">
-                          <Clock className="h-5 w-5" />
-                          <span>School Hours: 7:30 AM - 5:00 PM (Mon-Fri), 7:30 AM - 3:30 PM (Sat)</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-white/90">
-                          <Calendar className="h-5 w-5" />
-                          <span>6 Days a Week (Mon-Sat)</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-white/90">
-                          <Users className="h-5 w-5" />
-                          <span>Class Size: 30-35 Students</span>
-                        </div>
+                        {currentLevel.documents.map((doc, index) => (
+                          <div key={index} className="flex items-start gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <CheckCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                            <span className="font-medium">{doc}</span>
+                          </div>
+                        ))}
                       </div>
-                    </div>
+                    ) : (
+                      <div className="text-white/80 text-center py-8">
+                        <p>No specific document requirements listed for this level.</p>
+                        <p className="text-sm mt-2">Please contact the admissions office for details.</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -345,7 +361,7 @@ const Academics = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {teachingMethods.map((method, index) => (
                 <div key={index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-center group">
                   <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky-blue to-green rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -407,16 +423,29 @@ const Academics = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {extracurricular.map((activity, index) => (
-                <div key={index} className="bg-white rounded-2xl p-6 shadow-sm border border-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                  <div className={`w-14 h-14 ${activity.color} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <activity.icon className="h-7 w-7 text-white" />
+            <div className="flex flex-col gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {extracurricular.slice(0, 6).map((activity, index) => (
+                  <div key={index} className="bg-white rounded-2xl p-6 shadow-sm border border-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div className={`w-14 h-14 ${activity.color} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                      <activity.icon className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="font-heading font-bold text-navy text-lg mb-2">{activity.title}</h3>
+                    <p className="text-muted-foreground text-sm">{activity.description}</p>
                   </div>
-                  <h3 className="font-heading font-bold text-navy text-lg mb-2">{activity.title}</h3>
-                  <p className="text-muted-foreground text-sm">{activity.description}</p>
-                </div>
-              ))}
+                ))}
+              </div>
+              <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto w-full">
+                {extracurricular.slice(6).map((activity, index) => (
+                  <div key={index + 6} className="bg-white rounded-2xl p-6 shadow-sm border border-border hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                    <div className={`w-14 h-14 ${activity.color} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                      <activity.icon className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="font-heading font-bold text-navy text-lg mb-2">{activity.title}</h3>
+                    <p className="text-muted-foreground text-sm">{activity.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </ScrollRevealSection>
         </div>

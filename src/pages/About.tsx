@@ -225,8 +225,7 @@ const About = () => {
                   institution that combines the best of traditional values with modern teaching methodologies.
                 </p>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  What started as a single campus has now grown into a comprehensive educational network with 
-                  6 institutions across Ahmedabad, serving over 7,000 students from Early Years to Grade 10.
+                  From one campus to 8+ thriving institutions across Ahmedabad, we proudly educate 7,000+ students every year from Early Years to Grade 12. Now expanding to Hanspura, Naroda, we bring the CBSE curriculum to a future-ready campus with state-of-the-art infrastructure and world-class facilities—where excellence meets innovation.
                 </p>
                 
                 {/* Timeline of Growth */}
@@ -255,7 +254,15 @@ const About = () => {
                     </div>
                     <div className="flex items-start gap-3">
                       <span className="font-bold text-sky-blue">2021:</span>
-                      <span className="text-muted-foreground">Swastik Kidz Branch 3, Bhavani Shopping, Vastral</span>
+                      <span className="text-muted-foreground">Swastik Kidz Branch 3, Pushp Villa, Vastral</span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="font-bold text-sky-blue">2025:</span>
+                      <span className="text-muted-foreground">Swastik Kidz Branch 4, Pushpak, Viratnagar</span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="font-bold text-sky-blue">2025:</span>
+                      <span className="text-muted-foreground">Swastik Kidz Branch 5, Amarjyot, Viratnagar</span>
                     </div>
                   </div>
                 </div>

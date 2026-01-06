@@ -58,18 +58,14 @@ const HeroSection = () => {
           </a>
           
           {/* Stats Row */}
-          <div className="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/20">
-            <div>
-              <p className="text-3xl md:text-4xl font-bold text-white">25+</p>
-              <p className="text-sm text-white/70">Years of Excellence</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 pt-8 border-t border-white/20">
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-5">
+              <p className="text-2xl md:text-3xl font-bold text-white mb-2">8+ Campuses Across Ahmedabad</p>
+              <p className="text-sm text-white/80 leading-relaxed">A growing network of campuses committed to delivering consistent quality education and trusted learning environments for students and parents.</p>
             </div>
-            <div>
-              <p className="text-3xl md:text-4xl font-bold text-white">15000+</p>
-              <p className="text-sm text-white/70">Proud Students</p>
-            </div>
-            <div>
-              <p className="text-3xl md:text-4xl font-bold text-white">50+</p>
-              <p className="text-sm text-white/70">Activities</p>
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-5">
+              <p className="text-2xl md:text-3xl font-bold text-white mb-2">Upcoming CBSE Campus in Hanspura (2027)</p>
+              <p className="text-sm text-white/80 leading-relaxed">Expanding our legacy with a new CBSE-pattern campus in Hanspura, designed to offer a future-ready curriculum and world-class learning experience.</p>
             </div>
           </div>
         </div>

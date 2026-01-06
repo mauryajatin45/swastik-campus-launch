@@ -10,41 +10,25 @@ const AccreditationSection = () => {
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {/* Gujarat State Board */}
-          <div className="group bg-white/10 backdrop-blur-sm rounded-2xl p-5 text-center border border-white/20 hover:bg-white/20 hover:scale-105 hover:-translate-y-1 transition-all duration-300 cursor-default">
-            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-sky-blue/20 flex items-center justify-center group-hover:bg-sky-blue/30 transition-colors">
-              <BookOpen className="h-6 w-6 text-sky-blue" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {/* Curriculum - Gujarat State Board */}
+          <div className="group bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center border border-white/20 hover:bg-white/20 hover:scale-105 hover:-translate-y-1 transition-all duration-300 cursor-default">
+            <div className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-4 rounded-full bg-sky-blue/20 flex items-center justify-center group-hover:bg-sky-blue/30 transition-colors">
+              <BookOpen className="h-7 w-7 md:h-8 md:w-8 text-sky-blue" />
             </div>
-            <p className="font-heading font-bold text-white text-sm md:text-base">Gujarat State Board</p>
-            <p className="text-sky-blue text-xs font-medium mt-1">✓ Affiliated</p>
+            <p className="font-heading font-bold text-white text-base md:text-lg mb-1">Curriculum</p>
+            <p className="text-sky-blue text-sm md:text-base font-semibold">Gujarat State Board</p>
+            <p className="text-sky-blue text-xs font-medium mt-2">✓ Affiliated</p>
           </div>
           
-          {/* English Medium */}
-          <div className="group bg-white/10 backdrop-blur-sm rounded-2xl p-5 text-center border border-white/20 hover:bg-white/20 hover:scale-105 hover:-translate-y-1 transition-all duration-300 cursor-default">
-            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-green/20 flex items-center justify-center group-hover:bg-green/30 transition-colors">
-              <Globe className="h-6 w-6 text-green" />
+          {/* Medium of Learning */}
+          <div className="group bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center border border-white/20 hover:bg-white/20 hover:scale-105 hover:-translate-y-1 transition-all duration-300 cursor-default">
+            <div className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-4 rounded-full bg-green/20 flex items-center justify-center group-hover:bg-green/30 transition-colors">
+              <Globe className="h-7 w-7 md:h-8 md:w-8 text-green" />
             </div>
-            <p className="font-heading font-bold text-white text-sm md:text-base">English Medium</p>
-            <p className="text-green text-xs font-medium mt-1">✓ Available</p>
-          </div>
-          
-          {/* Gujarati Medium */}
-          <div className="group bg-white/10 backdrop-blur-sm rounded-2xl p-5 text-center border border-white/20 hover:bg-white/20 hover:scale-105 hover:-translate-y-1 transition-all duration-300 cursor-default">
-            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-orange/20 flex items-center justify-center group-hover:bg-orange/30 transition-colors">
-              <BookOpen className="h-6 w-6 text-orange" />
-            </div>
-            <p className="font-heading font-bold text-white text-sm md:text-base">Gujarati Medium</p>
-            <p className="text-orange text-xs font-medium mt-1">✓ Available</p>
-          </div>
-          
-          {/* CBSE Pattern */}
-          <div className="group bg-white/10 backdrop-blur-sm rounded-2xl p-5 text-center border border-white/20 hover:bg-white/20 hover:scale-105 hover:-translate-y-1 transition-all duration-300 cursor-default">
-            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-red-accent/20 flex items-center justify-center group-hover:bg-red-accent/30 transition-colors">
-              <GraduationCap className="h-6 w-6 text-red-accent" />
-            </div>
-            <p className="font-heading font-bold text-white text-sm md:text-base">CBSE Pattern</p>
-            <p className="text-red-accent text-xs font-medium mt-1">✓ Teaching</p>
+            <p className="font-heading font-bold text-white text-base md:text-lg mb-1">Medium of Learning</p>
+            <p className="text-green text-sm md:text-base font-semibold">English & Gujarati</p>
+            <p className="text-green text-xs font-medium mt-2">✓ Available</p>
           </div>
         </div>
       </div>

@@ -6,25 +6,25 @@ const whyChooseCards = [
   {
     icon: GraduationCap,
     title: "Academic Excellence",
-    description: "Comprehensive curriculum designed to nurture critical thinking and creativity.",
+    description: "A strong curriculum supported by effective teaching practices that help students achieve consistent academic success and confidence in learning.",
     color: "sky-blue",
   },
   {
     icon: Users,
     title: "Experienced Faculty",
-    description: "Dedicated educators committed to bringing out the best in every student.",
+    description: "Highly qualified and dedicated educators who mentor, motivate, and guide each child with care and expertise.",
     color: "green",
   },
   {
     icon: Trophy,
     title: "Holistic Development",
-    description: "Balanced focus on academics, sports, arts, and character building.",
+    description: "Equal focus on academics, values, creativity, sports, and life skills to nurture well-rounded and responsible individuals.",
     color: "orange",
   },
   {
     icon: Heart,
-    title: "Safe Environment",
-    description: "A nurturing space where every child feels valued and protected.",
+    title: "Safe Learning Environment",
+    description: "A secure, disciplined, and supportive campus where students feel protected, respected, and encouraged to grow.",
     color: "red-accent",
   },
 ];
@@ -54,14 +54,10 @@ const WhyChooseUsSection = () => {
                 We Are Swastik Education Campus
               </h2>
               <p className="text-muted-foreground text-lg mb-6">
-                As a leading educational institution in Ahmedabad, Swastik Education Campus 
-                offers students from Early Years to Grade 10 a well-rounded education at our 
-                modern campus near Narendra Modi Stadium.
+                Established in 2002, Swastik Education Campus stands as a trusted name in quality education in Motera, Ahmedabad. Our state-of-the-art campus, located near the iconic Narendra Modi Stadium, offers a comprehensive learning journey from Early Years to Grade 12 in both Science and General streams.
               </p>
               <p className="text-muted-foreground mb-8">
-                Our 21st-century learning environment combines traditional values with 
-                innovative teaching methods, preparing students for success in an 
-                ever-changing world.
+                At Swastik Education Campus, we nurture young minds in a dynamic 21st-century learning environment that seamlessly blends strong traditional values with innovative teaching practices. Our student-centric approach empowers learners with academic excellence, critical thinking, and life skills—preparing them to thrive and lead in an ever-evolving global world.
               </p>
               <Link to="/about" className="btn-outline-navy group">
                 Learn More About Us
