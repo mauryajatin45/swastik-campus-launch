@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { 
-  Quote, 
-  GraduationCap, 
-  Users, 
-  Trophy, 
-  Target, 
-  Eye, 
-  Heart, 
+import {
+  Quote,
+  GraduationCap,
+  Users,
+  Trophy,
+  Target,
+  Eye,
+  Heart,
   Star,
   Award,
   BookOpen,
@@ -156,7 +156,7 @@ const About = () => {
           <img src={heroImage} alt="Campus" className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-r from-navy/90 to-navy-dark/70" />
         </div>
-        
+
         {/* Decorative Elements */}
         <div className="absolute top-20 right-20 w-64 h-64 bg-sky-blue/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 left-10 w-80 h-80 bg-orange/10 rounded-full blur-3xl"></div>
@@ -171,8 +171,8 @@ const About = () => {
                 Shaping Futures, <span className="text-sky-blue">Building Dreams</span>
               </h1>
               <p className="text-lg text-white/80 mb-8 max-w-2xl">
-                For over 25 years, we have been nurturing young minds with a perfect blend of 
-                academic excellence, moral values, and holistic development at our state-of-the-art 
+                For over 25 years, we have been nurturing young minds with a perfect blend of
+                academic excellence, moral values, and holistic development at our state-of-the-art
                 campus near Narendra Modi Stadium, Ahmedabad.
               </p>
               <div className="flex flex-wrap gap-4">
@@ -225,13 +225,13 @@ const About = () => {
                 </span>
                 <h2 className="section-title mb-6">A Legacy of Excellence Since 2002</h2>
                 <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                  Swastik Education Campus was founded in 2002 with a singular vision: to create an educational 
+                  Swastik Education Campus was founded in 2002 with a singular vision: to create an educational
                   institution that combines the best of traditional values with modern teaching methodologies.
                 </p>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
                   From one campus to 8+ thriving institutions across Ahmedabad, we proudly educate 7,000+ students every year from Early Years to Grade 12. Now expanding to Hanspura, Naroda, we bring the CBSE curriculum to a future-ready campus with state-of-the-art infrastructure and world-class facilities—where excellence meets innovation.
                 </p>
-                
+
                 {/* Timeline of Growth */}
                 <div className="bg-pale-gray rounded-2xl p-6 mb-6">
                   <h3 className="font-heading font-bold text-navy text-lg mb-4">Our Journey of Growth</h3>
@@ -272,11 +272,11 @@ const About = () => {
                 </div>
 
                 <p className="text-muted-foreground mb-8 leading-relaxed">
-                  Located near the iconic Narendra Modi Stadium in Ahmedabad, our campuses boast 
-                  state-of-the-art facilities, including smart classrooms, advanced science labs, 
+                  Located near the iconic Narendra Modi Stadium in Ahmedabad, our campuses boast
+                  state-of-the-art facilities, including smart classrooms, advanced science labs,
                   sports grounds, and dedicated spaces for arts and cultural activities.
                 </p>
-                
+
                 <div className="flex flex-wrap gap-4">
                   {[
                     { icon: MapPin, text: "8 Campuses" },
@@ -313,6 +313,51 @@ const About = () => {
         </div>
       </section>
 
+      {/* Leadership Team */}
+      <section className="py-20 bg-pale-gray">
+        <div className="container mx-auto px-4">
+          <ScrollRevealSection>
+            <div className="text-center mb-16">
+              <span className="inline-block bg-white text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                Meet Our Team
+              </span>
+              <h2 className="section-title mb-4">Leadership Team</h2>
+              <p className="section-subtitle mx-auto">
+                Experienced educators dedicated to student success
+              </p>
+            </div>
+
+            {leadersLoading ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Loading team members...</p>
+              </div>
+            ) : leadership.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">No team members found.</p>
+              </div>
+            ) : (
+              <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
+                {leadership.map((leader, index) => (
+                  <div key={leader.id || index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 text-center group w-full sm:w-72">
+                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-sky-blue to-green flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform">
+                      {leader.image_url ? (
+                        <img src={leader.image_url} alt={leader.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-4xl font-bold text-white">
+                          {leader.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="font-heading font-bold text-navy text-lg mb-1">{leader.name}</h3>
+                    <p className="text-sky-blue font-medium text-sm mb-2">{leader.role}</p>
+                    <p className="text-muted-foreground text-sm">{leader.description}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </ScrollRevealSection>
+        </div>
+      </section>
       {/* Timeline */}
       <section className="py-20 bg-pale-gray relative overflow-hidden">
         {/* Decorative Background Elements */}
@@ -320,7 +365,7 @@ const About = () => {
         <div className="absolute top-1/3 right-0 w-80 h-80 bg-green/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 left-1/4 w-72 h-72 bg-orange/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-red-accent/10 rounded-full blur-3xl"></div>
-        
+
         {/* Subtle Pattern Overlay */}
         <div className="absolute inset-0 opacity-5" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230066cc' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -342,7 +387,7 @@ const About = () => {
               <div className="relative">
                 {/* Timeline line */}
                 <div className="absolute left-[7px] md:left-1/2 md:-translate-x-1/2 h-full w-1 bg-gradient-to-b from-sky-blue via-green to-orange rounded-full"></div>
-                
+
                 {milestones.map((milestone, index) => {
                   const isLast = index === milestones.length - 1;
                   return (
@@ -412,8 +457,8 @@ const About = () => {
                   <h3 className="text-2xl font-heading font-bold">Our Mission</h3>
                 </div>
                 <p className="text-white/80 leading-relaxed mb-6">
-                  To provide a transformative educational experience that develops intellectual curiosity, 
-                  ethical leadership, and global citizenship. We are committed to fostering an environment 
+                  To provide a transformative educational experience that develops intellectual curiosity,
+                  ethical leadership, and global citizenship. We are committed to fostering an environment
                   where every student can discover their unique potential.
                 </p>
                 <ul className="space-y-3">
@@ -435,8 +480,8 @@ const About = () => {
                   <h3 className="text-2xl font-heading font-bold">Our Vision</h3>
                 </div>
                 <p className="text-white/80 leading-relaxed mb-6">
-                  To be recognized as a leading educational institution that sets the benchmark for 
-                  academic excellence, character development, and innovation in teaching. We envision 
+                  To be recognized as a leading educational institution that sets the benchmark for
+                  academic excellence, character development, and innovation in teaching. We envision
                   empowering learners to lead with compassion.
                 </p>
                 <ul className="space-y-3">
@@ -487,52 +532,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Leadership Team */}
-      <section className="py-20 bg-pale-gray">
-        <div className="container mx-auto px-4">
-          <ScrollRevealSection>
-            <div className="text-center mb-16">
-              <span className="inline-block bg-white text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                Meet Our Team
-              </span>
-              <h2 className="section-title mb-4">Leadership Team</h2>
-              <p className="section-subtitle mx-auto">
-                Experienced educators dedicated to student success
-              </p>
-            </div>
-
-            {leadersLoading ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">Loading team members...</p>
-              </div>
-            ) : leadership.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">No team members found.</p>
-              </div>
-            ) : (
-              <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
-                {leadership.map((leader, index) => (
-                  <div key={leader.id || index} className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 text-center group w-full sm:w-72">
-                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-sky-blue to-green flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform">
-                      {leader.image_url ? (
-                        <img src={leader.image_url} alt={leader.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-4xl font-bold text-white">
-                          {leader.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="font-heading font-bold text-navy text-lg mb-1">{leader.name}</h3>
-                    <p className="text-sky-blue font-medium text-sm mb-2">{leader.role}</p>
-                    <p className="text-muted-foreground text-sm">{leader.description}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </ScrollRevealSection>
-        </div>
-      </section>
-
       {/* Achievements */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -549,13 +548,17 @@ const About = () => {
 
             <div className="grid md:grid-cols-4 gap-6">
               {achievements.map((achievement, index) => (
-                <div key={index} className="bg-gradient-to-br from-pale-blue to-white rounded-2xl p-6 border border-sky-blue/20 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                <Link
+                  key={index}
+                  to="/achievements"
+                  className="block group bg-gradient-to-br from-pale-blue to-white rounded-2xl p-6 border border-sky-blue/20 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                >
                   <div className="w-14 h-14 bg-sky-blue/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-sky-blue/20 transition-colors">
                     <achievement.icon className="h-7 w-7 text-sky-blue" />
                   </div>
                   <h3 className="font-heading font-bold text-navy text-lg mb-2">{achievement.title}</h3>
                   <p className="text-muted-foreground text-sm">{achievement.description}</p>
-                </div>
+                </Link>
               ))}
             </div>
           </ScrollRevealSection>
@@ -571,7 +574,7 @@ const About = () => {
                 Ready to Join the Swastik Family?
               </h2>
               <p className="text-white/90 mb-8 text-lg">
-                Take the first step towards a brighter future for your child. Schedule a campus tour 
+                Take the first step towards a brighter future for your child. Schedule a campus tour
                 or apply for admission today.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
@@ -595,7 +598,7 @@ const About = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy-dark/95 to-navy/95"></div>
         </div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzBoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0tNCA0aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptLTQgNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20 z-10"></div>
-        
+
         <div className="container mx-auto px-4 relative z-20">
           <ScrollRevealSection>
             <div className="text-center max-w-3xl mx-auto">
@@ -603,11 +606,11 @@ const About = () => {
                 <Calendar className="h-6 w-6 text-sky-blue animate-pulse" />
                 <span className="font-heading font-bold text-sky-blue text-lg">Coming Soon</span>
               </div>
-              
+
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6 leading-tight">
                 Expanding to <span className="text-sky-blue">Hanspura</span>
               </h2>
-              
+
               <p className="text-white/80 text-lg md:text-xl mb-8 leading-relaxed">
                 We're thrilled to announce our upcoming campus in Hanspura! Stay tuned for more updates on this exciting new chapter in our journey of educational excellence.
               </p>

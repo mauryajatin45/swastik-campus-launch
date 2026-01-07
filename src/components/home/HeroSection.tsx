@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Phone, Calendar } from "lucide-react";
-import heroVideo from "@/assets/swastikhero.mp4";
+import heroVideo from "@/assets/newswastikhero.mp4";
 
 const HeroSection = () => {
   return (

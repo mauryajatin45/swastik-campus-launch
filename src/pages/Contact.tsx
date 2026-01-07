@@ -16,6 +16,7 @@ import {
   PhoneCall
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { enquiryAPI } from "@/services/api";
 import heroImage from "@/assets/hero-campus.jpg";
 
 // Scroll reveal hook
@@ -76,28 +77,63 @@ const Contact = () => {
 
   const isAdmissionReady = formData.inquiryType === "admission" && formData.medium;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // If admission inquiry with medium selected, redirect to admission form
+    // If admission inquiry with medium selected, save data then redirect to admission form
     if (isAdmissionReady) {
-      // Pass data via URL params
-      const params = new URLSearchParams({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        medium: formData.medium,
-      });
-      navigate(`/admission-form?${params.toString()}`);
+      try {
+        // First, save the inquiry to database
+        await enquiryAPI.submit({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          inquiry_type: `Admission - ${formData.medium === 'english' ? 'English Medium' : 'Gujarati Medium'}`,
+          message: `Admission inquiry - Preferred Medium: ${formData.medium}`,
+        });
+        
+        // Then redirect to admission form with data
+        const params = new URLSearchParams({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          medium: formData.medium,
+        });
+        navigate(`/admission-form?${params.toString()}`);
+      } catch (error) {
+        console.error('Error submitting inquiry:', error);
+        toast({
+          title: "Error",
+          description: "Failed to submit inquiry. Please try again.",
+          variant: "destructive",
+        });
+      }
       return;
     }
     
     // Otherwise, submit as regular contact message
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for your inquiry. We will get back to you shortly.",
-    });
-    setFormData({ name: "", email: "", phone: "", inquiryType: "admission", medium: "", message: "" });
+    try {
+      await enquiryAPI.submit({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        inquiry_type: formData.inquiryType,
+        message: formData.message,
+      });
+      
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for your inquiry. We will get back to you shortly.",
+      });
+      setFormData({ name: "", email: "", phone: "", inquiryType: "admission", medium: "", message: "" });
+    } catch (error) {
+      console.error('Error submitting message:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
