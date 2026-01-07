@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Instagram, Facebook, Twitter, Youtube, ArrowRight } from "lucide-react";
+import { Phone, Mail, MapPin, Instagram, Facebook, Youtube, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/logo.png";
 
@@ -63,10 +63,9 @@ const Footer = () => {
               </p>
               <div className="flex gap-3">
                 {[
-                  { icon: Facebook, href: "#" },
-                  { icon: Instagram, href: "https://instagram.com/swastikcampus" },
-                  { icon: Twitter, href: "#" },
-                  { icon: Youtube, href: "#" },
+                  { icon: Instagram, href: "https://www.instagram.com/swastikcampus" },
+                  { icon: Facebook, href: "https://www.facebook.com/share/17huAy1dU5/" },
+                  { icon: Youtube, href: "https://www.youtube.com/@swastikmotera" },
                 ].map((social, i) => (
                   <a
                     key={i}

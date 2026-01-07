@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import heroImage from "@/assets/hero-campus.jpg";
+import hanspuraCampus from "@/assets/hanspura-campus.jpg";
+import campusBuilding from "@/assets/campus-building.jpg";
 
 // Scroll reveal hook
 const useScrollReveal = () => {
@@ -104,7 +106,9 @@ const About = () => {
     { year: "2012", title: "Noble Education Campus", description: "Established at Kathwada Road, strengthening our commitment to quality education across Ahmedabad." },
     { year: "2016", title: "Swastik Kidz – Branch 2", description: "Second pre-school branch at Madhav Bagh, Vastral, Bors Road, serving more families in the community." },
     { year: "2018", title: "Swastik Education Campus", description: "New campus opened at Bapunagar, Chawk, Nava Naroda, another milestone in our expansion." },
-    { year: "2021", title: "Swastik Kidz – Branch 3", description: "Latest addition at Bhavani Shopping, Vastral, completing our network of 6 institutions across Ahmedabad." },
+    { year: "2021", title: "Swastik Kidz – Branch 3", description: "Third pre-school branch at Pushp Villa, Vastral, continuing our mission of early childhood excellence." },
+    { year: "2025", title: "Swastik Kidz – Branch 4", description: "Fourth pre-school branch opened at Pushpak, Viratnagar, expanding our reach to nurture more young learners." },
+    { year: "2025", title: "Swastik Kidz – Branch 5", description: "Fifth pre-school branch at Amarjyot, Viratnagar, completing our network of 8 institutions across Ahmedabad." },
     { year: "2027", title: "Coming Soon in Hanspura", description: "Exciting new campus expansion coming to Hanspura! Stay tuned for updates on this next chapter of growth." },
   ];
 
@@ -275,9 +279,9 @@ const About = () => {
                 
                 <div className="flex flex-wrap gap-4">
                   {[
-                    { icon: MapPin, text: "6 Campuses" },
+                    { icon: MapPin, text: "8 Campuses" },
                     { icon: BookOpen, text: "Modern Curriculum" },
-                    { icon: Users, text: "7000+ Students" },
+                    { icon: Users, text: "7000+ Students Each Year" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-2 bg-pale-gray px-4 py-2 rounded-full">
                       <item.icon className="h-4 w-4 text-sky-blue" />
@@ -290,7 +294,7 @@ const About = () => {
               {/* Image with floating elements */}
               <div className="relative">
                 <div className="rounded-3xl overflow-hidden shadow-2xl">
-                  <img src={heroImage} alt="Our Campus" className="w-full h-[500px] object-cover" />
+                  <img src={campusBuilding} alt="Our Campus" className="w-full h-[500px] object-cover" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-5 animate-float">
                   <div className="flex items-center gap-3">
@@ -333,10 +337,27 @@ const About = () => {
                   return (
                     <div key={index} className={`relative flex items-center mb-12 ${isLast ? 'justify-end md:justify-center' : `justify-end ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}`}>
                       <div className={`${isLast ? 'w-10/12 md:w-6/12 pl-0 text-left md:text-center' : `w-10/12 md:w-5/12 pl-0 text-left ${index % 2 === 0 ? 'md:pr-8 md:text-right md:pl-0' : 'md:pl-8 md:text-left'}`}`}>
-                        <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                          <span className="text-sky-blue font-bold text-lg">{milestone.year}</span>
-                          <h3 className="font-heading font-bold text-navy text-xl mt-2 mb-2">{milestone.title}</h3>
-                          <p className="text-muted-foreground text-sm">{milestone.description}</p>
+                        <div className={`${isLast ? 'relative overflow-hidden min-h-[300px] flex flex-col justify-end' : ''} bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow`}>
+                          {isLast && (
+                            <>
+                              <div className="absolute inset-0 z-0">
+                                <img src={hanspuraCampus} alt="Hanspura Campus" className="w-full h-full object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                              </div>
+                              <div className="relative z-10 text-white">
+                                <span className="text-sky-blue font-bold text-lg">{milestone.year}</span>
+                                <h3 className="font-heading font-bold text-white text-xl mt-2 mb-2">{milestone.title}</h3>
+                                <p className="text-white/90 text-sm">{milestone.description}</p>
+                              </div>
+                            </>
+                          )}
+                          {!isLast && (
+                            <>
+                              <span className="text-sky-blue font-bold text-lg">{milestone.year}</span>
+                              <h3 className="font-heading font-bold text-navy text-xl mt-2 mb-2">{milestone.title}</h3>
+                              <p className="text-muted-foreground text-sm">{milestone.description}</p>
+                            </>
+                          )}
                         </div>
                       </div>
                       {/* Center dot - hide for last item */}
@@ -557,10 +578,14 @@ const About = () => {
       </section>
 
       {/* Coming Soon Section */}
-      <section className="py-16 bg-gradient-to-r from-orange via-red-accent to-orange relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzBoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0tNCA0aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptLTQgNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
+      <section className="py-16 relative overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img src={hanspuraCampus} alt="Hanspura Campus" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-orange/90 via-red-accent/90 to-orange/90"></div>
+        </div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzBoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0tNCA0aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptLTQgNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20 z-10"></div>
         
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 relative z-20">
           <ScrollRevealSection>
             <div className="text-center max-w-3xl mx-auto">
               <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6 border-2 border-white/30">
