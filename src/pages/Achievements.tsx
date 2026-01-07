@@ -272,35 +272,6 @@ const Achievements = () => {
         </>
       )}
 
-      {/* Newsletter CTA */}
-      <section className="py-20 bg-gradient-to-r from-navy to-navy-dark">
-        <div className="container mx-auto px-4">
-          <ScrollRevealSection>
-            <div className="max-w-2xl mx-auto text-center">
-              <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Mail className="h-8 w-8 text-orange" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
-                Stay Connected
-              </h2>
-              <p className="text-white/70 mb-8">
-                Subscribe to our newsletter and never miss important updates about school events and announcements.
-              </p>
-              <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-6 py-4 rounded-xl bg-white text-navy placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-orange"
-                />
-                <button type="submit" className="bg-orange text-white px-8 py-4 rounded-xl font-semibold hover:bg-orange-light transition-colors whitespace-nowrap">
-                  Subscribe
-                </button>
-              </form>
-            </div>
-          </ScrollRevealSection>
-        </div>
-      </section>
-
       {/* News Detail Modal */}
       {selectedAchievement && (
         <div 
