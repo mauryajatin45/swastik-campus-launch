@@ -314,8 +314,19 @@ const About = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 bg-pale-gray">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-pale-gray relative overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-10 left-0 w-96 h-96 bg-sky-blue/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 right-0 w-80 h-80 bg-green/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 left-1/4 w-72 h-72 bg-orange/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-red-accent/10 rounded-full blur-3xl"></div>
+        
+        {/* Subtle Pattern Overlay */}
+        <div className="absolute inset-0 opacity-5" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230066cc' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}></div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <ScrollRevealSection>
             <div className="text-center mb-16">
               <span className="inline-block bg-white text-sky-blue px-4 py-2 rounded-full text-sm font-semibold mb-4">
@@ -581,28 +592,28 @@ const About = () => {
       <section className="py-16 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src={hanspuraCampus} alt="Hanspura Campus" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-orange/90 via-red-accent/90 to-orange/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy-dark/95 to-navy/95"></div>
         </div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzBoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0wLTRoMnYyaC0ydi0yem0tNCA0aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptMC00aDJ2MmgtMnYtMnptLTQgNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6bTAtNGgydjJoLTJ2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20 z-10"></div>
         
         <div className="container mx-auto px-4 relative z-20">
           <ScrollRevealSection>
             <div className="text-center max-w-3xl mx-auto">
-              <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6 border-2 border-white/30">
-                <Calendar className="h-6 w-6 text-white animate-pulse" />
-                <span className="font-heading font-bold text-white text-lg">Coming Soon</span>
+              <div className="inline-flex items-center gap-3 bg-sky-blue/20 backdrop-blur-sm px-6 py-3 rounded-full mb-6 border-2 border-sky-blue/30">
+                <Calendar className="h-6 w-6 text-sky-blue animate-pulse" />
+                <span className="font-heading font-bold text-sky-blue text-lg">Coming Soon</span>
               </div>
               
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6 leading-tight">
-                Expanding to <span className="text-yellow-300">Hanspura</span>
+                Expanding to <span className="text-sky-blue">Hanspura</span>
               </h2>
               
-              <p className="text-white/90 text-lg md:text-xl mb-8 leading-relaxed">
+              <p className="text-white/80 text-lg md:text-xl mb-8 leading-relaxed">
                 We're thrilled to announce our upcoming campus in Hanspura! Stay tuned for more updates on this exciting new chapter in our journey of educational excellence.
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <Link to="/contact" className="bg-white text-orange px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-100 transition-all duration-300 inline-flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-105">
+                <Link to="/contact" className="bg-sky-blue text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-sky-blue/90 transition-all duration-300 inline-flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-105">
                   Get Notified
                   <ArrowRight className="h-5 w-5" />
                 </Link>

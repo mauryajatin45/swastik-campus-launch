@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { 
-  FileText, 
-  Calendar, 
-  CheckCircle, 
+import {
+  FileText,
+  Calendar,
+  CheckCircle,
   ArrowRight,
   Phone,
   Mail,
@@ -101,11 +101,12 @@ const dates = [
 ];
 
 const eligibility = [
-  { level: "Nursery", age: "3 years by June 1st", icon: Users, color: "bg-sky-blue", documents: ["Birth Certificate", "Passport Photos", "Aadhar Card Copy"] },
-  { level: "LKG", age: "4 years by June 1st", icon: Users, color: "bg-green", documents: ["Birth Certificate", "Passport Photos", "Aadhar Card Copy"] },
-  { level: "UKG", age: "5 years by June 1st", icon: Users, color: "bg-orange", documents: ["Birth Certificate", "Previous School Records", "Aadhar Card Copy"] },
-  { level: "Grade 1-5", age: "As per age norms", icon: GraduationCap, color: "bg-red-accent", documents: ["Transfer Certificate", "Report Card", "Birth Certificate", "Aadhar Card Copy"] },
-  { level: "Grade 6-10", age: "As per age norms", icon: GraduationCap, color: "bg-navy", documents: ["Transfer Certificate", "Report Card", "Migration Certificate", "Birth Certificate", "Aadhar Card Copy"] },
+  { level: "Nursery/Toddlers", age: "Minimum 2 years completed by June 1st", icon: Users, color: "bg-sky-blue", documents: ["Birth Certificate", "Child Passport Size Photo", "Child Aadhaar Card Xerox"] },
+  { level: "Jr. K.G.", age: "Minimum 3 years completed by June 1st", icon: Users, color: "bg-green", documents: ["Birth Certificate", "Child Passport Size Photo", "Child Aadhaar Card Xerox"] },
+  { level: "Sr. K.G.", age: "Minimum 4 years completed by June 1st", icon: Users, color: "bg-orange", documents: ["Birth Certificate", "Child Passport Size Photo", "Child Aadhaar Card Xerox"] },
+  { level: "Balvatika", age: "Minimum 5 years completed by June 1st", icon: GraduationCap, color: "bg-red-accent", documents: ["Birth Certificate", "Child Passport Size Photo", "Child Aadhaar Card Xerox"] },
+  { level: "Grade 1", age: "Minimum 6 years completed by June 1st", icon: GraduationCap, color: "bg-navy", documents: ["Birth Certificate and its Xerox", "Child Passport Size Photo", "Aadhaar Card Xerox", "Leaving Certificate of Last School and ID Number"] },
+  { level: "Grade 2 and Above", age: "As per GSEB Age criteria", icon: GraduationCap, color: "bg-sky-blue", documents: ["Leaving Certificate of Last School", "Last Result Copy", "Student Passport Size Photo", "Student Aadhaar Card Xerox", "Last School Issued ID Number"] },
 ];
 
 const fees = [
@@ -132,7 +133,7 @@ const Admissions = () => {
           <img src={heroImage} alt="Admissions" className="w-full h-full object-cover opacity-30" />
           <div className="absolute inset-0 bg-gradient-to-r from-navy/90 to-navy-dark/70" />
         </div>
-        
+
         {/* Decorative Elements */}
         <div className="absolute top-20 right-20 w-64 h-64 bg-orange/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-10 left-10 w-80 h-80 bg-sky-blue/10 rounded-full blur-3xl"></div>
@@ -148,7 +149,7 @@ const Admissions = () => {
                   Join the <span className="text-orange">Swastik Family</span>
                 </h1>
                 <p className="text-lg text-white/80 mb-8 max-w-xl">
-                  Begin your child's journey towards academic excellence and personal growth. 
+                  Begin your child's journey towards academic excellence and personal growth.
                   Limited seats available for the upcoming academic session.
                 </p>
                 <div className="flex flex-wrap gap-4">
@@ -374,7 +375,7 @@ const Admissions = () => {
                   <Mail className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="font-heading font-bold text-navy mb-2">Email Us</h3>
-                <a href="mailto:admissions@swastikcampus.edu" className="text-green hover:underline">admissions@swastikcampus.edu</a>
+                <a href="mailto:swastikmotera@gmail.com" className="text-green hover:underline">swastikmotera@gmail.com</a>
               </div>
               <div className="flex flex-col items-center">
                 <div className="w-14 h-14 bg-orange rounded-full flex items-center justify-center mb-4">
@@ -397,7 +398,7 @@ const Admissions = () => {
                 Ready to Take the First Step?
               </h2>
               <p className="text-white/80 mb-8 text-lg">
-                Secure your child's future at Swastik Education Campus. Our admissions team 
+                Secure your child's future at Swastik Education Campus. Our admissions team
                 is here to guide you through every step of the process.
               </p>
               <div className="flex flex-wrap justify-center gap-4">

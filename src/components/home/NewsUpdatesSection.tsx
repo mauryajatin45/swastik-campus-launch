@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calendar } from "lucide-react";
 import { ScrollRevealSection } from "./hooks";
-import { newsAPI } from "@/services/api";
+import { achievementsAPI } from '@/services/api';
 
 const NewsUpdatesSection = () => {
   const [newsItems, setNewsItems] = useState<any[]>([]);
@@ -11,7 +11,7 @@ const NewsUpdatesSection = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await newsAPI.getAll();
+        const response = await achievementsAPI.getAll();
         const data = response.data; // Access data from Axios response
         // Get only News items (achievements), limit to 3
         const newsOnly = data.filter((item: any) => item.type === 'News').slice(0, 3);

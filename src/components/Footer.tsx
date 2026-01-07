@@ -11,7 +11,7 @@ const Footer = () => {
     { path: "/academics", label: "Academics" },
     { path: "/admissions", label: "Admissions" },
     { path: "/gallery", label: "Gallery" },
-    { path: "/news", label: "News & Events" },
+    { path: "/achievements", label: "Achievements" },
     { path: "/contact", label: "Contact Us" },
   ];
 

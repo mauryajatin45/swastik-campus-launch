@@ -94,27 +94,27 @@ export const galleryAPI = {
   delete: (id: number) => api.delete(`/gallery/${id}`),
 };
 
-// News APIs
-export const newsAPI = {
+// Achievements APIs
+export const achievementsAPI = {
   getAll: (type?: string) =>
-    api.get('/news', { params: { type } }),
+    api.get('/achievements', { params: { type } }),
   
-  getOne: (id: number) => api.get(`/news/${id}`),
+  getOne: (id: number) => api.get(`/achievements/${id}`),
   
   create: (formData: FormData) =>
-    api.post('/news', formData, {
+    api.post('/achievements', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
   
   update: (id: number, formData: FormData) =>
-    api.put(`/news/${id}`, formData, {
+    api.put(`/achievements/${id}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
   
-  delete: (id: number) => api.delete(`/news/${id}`),
+  delete: (id: number) => api.delete(`/achievements/${id}`),
   
   toggleFeatured: (id: number, is_featured: boolean) =>
-    api.patch(`/news/${id}/featured`, { is_featured }),
+    api.patch(`/achievements/${id}/featured`, { is_featured }),
 };
 
 // Leadership APIs

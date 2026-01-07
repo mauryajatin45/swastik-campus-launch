@@ -25,7 +25,7 @@ const Header = ({ onEnquireClick }: HeaderProps) => {
     { path: "/about", label: "About" },
     { path: "/academics", label: "Academics" },
     { path: "/admissions", label: "Admissions" },
-    { path: "/news", label: "News" },
+    { path: "/achievements", label: "Achievements" },
     { path: "/gallery", label: "Gallery" },
     { path: "/contact", label: "Contact" },
   ];

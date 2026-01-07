@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { enquiryAPI, galleryAPI, newsAPI, leadershipAPI } from "../../services/api";
+import { enquiryAPI, galleryAPI, achievementsAPI, leadershipAPI } from "../../services/api";
 import {
   LogOut,
   MessageSquare,
@@ -65,7 +65,7 @@ interface GalleryPhoto {
   created_at: string;
 }
 
-interface NewsItem {
+interface AchievementItem {
   id: number;
   title: string;
   type: string;
@@ -92,7 +92,7 @@ interface LeadershipMember {
 const AdminDashboard = () => {
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"enquiries" | "gallery" | "news" | "leadership">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "gallery" | "achievements" | "leadership">("enquiries");
 
   // Enquiry states
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
@@ -115,13 +115,13 @@ const AdminDashboard = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   // News states
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
-  const [newsLoading, setNewsLoading] = useState(false);
-  const [showNewsModal, setShowNewsModal] = useState(false);
-  const [editingNews, setEditingNews] = useState<NewsItem | null>(null);
-  const [newsForm, setNewsForm] = useState({
+  const [AchievementItems, setAchievementItems] = useState<AchievementItem[]>([]);
+  const [achievementsLoading, setachievementsLoading] = useState(false);
+  const [showAchievementModal, setshowAchievementModal] = useState(false);
+  const [editingAchievement, seteditingAchievement] = useState<AchievementItem | null>(null);
+  const [achievementForm, setachievementForm] = useState({
     title: "",
-    type: "News",
+    type: "Achievement",
     excerpt: "",
     content: "",
     event_date: "",
@@ -129,8 +129,8 @@ const AdminDashboard = () => {
     event_location: "",
     is_featured: false,
   });
-  const [newsImage, setNewsImage] = useState<File | null>(null);
-  const [isSavingNews, setIsSavingNews] = useState(false);
+  const [achievementImage, setachievementImage] = useState<File | null>(null);
+  const [isSavingAchievement, setisSavingAchievement] = useState(false);
 
   // Leadership states
   const [leadershipMembers, setLeadershipMembers] = useState<LeadershipMember[]>([]);
@@ -151,8 +151,8 @@ const AdminDashboard = () => {
       fetchEnquiries();
     } else if (activeTab === "gallery") {
       fetchGallery();
-    } else if (activeTab === "news") {
-      fetchNews();
+    } else if (activeTab === "achievements") {
+      fetchAchievements();
     } else {
       fetchLeadership();
     }
@@ -187,15 +187,15 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchNews = async () => {
-    setNewsLoading(true);
+  const fetchAchievements = async () => {
+    setachievementsLoading(true);
     try {
-      const response = await newsAPI.getAll();
-      setNewsItems(response.data);
+      const response = await achievementsAPI.getAll();
+      setAchievementItems(response.data);
     } catch (error) {
       console.error("Failed to fetch news:", error);
     } finally {
-      setNewsLoading(false);
+      setachievementsLoading(false);
     }
   };
 
@@ -267,10 +267,10 @@ const AdminDashboard = () => {
   };
 
   // News handlers
-  const openNewsModal = (news?: NewsItem) => {
+  const openAchievementModal = (news?: AchievementItem) => {
     if (news) {
-      setEditingNews(news);
-      setNewsForm({
+      seteditingAchievement(news);
+      setachievementForm({
         title: news.title,
         type: news.type,
         excerpt: news.excerpt,
@@ -281,10 +281,10 @@ const AdminDashboard = () => {
         is_featured: news.is_featured,
       });
     } else {
-      setEditingNews(null);
-      setNewsForm({
+      seteditingAchievement(null);
+      setachievementForm({
         title: "",
-        type: "News",
+        type: "achievements",
         excerpt: "",
         content: "",
         event_date: "",
@@ -293,47 +293,47 @@ const AdminDashboard = () => {
         is_featured: false,
       });
     }
-    setNewsImage(null);
-    setShowNewsModal(true);
+    setachievementImage(null);
+    setshowAchievementModal(true);
   };
 
-  const handleSaveNews = async (e: React.FormEvent) => {
+  const handleSaveAchievement = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSavingNews(true);
+    setisSavingAchievement(true);
     try {
       const formData = new FormData();
-      formData.append("title", newsForm.title);
-      formData.append("type", newsForm.type);
-      formData.append("excerpt", newsForm.excerpt);
-      formData.append("content", newsForm.content);
-      formData.append("event_date", newsForm.event_date);
-      formData.append("event_time", newsForm.event_time);
-      formData.append("event_location", newsForm.event_location);
-      formData.append("is_featured", newsForm.is_featured.toString());
-      if (newsImage) {
-        formData.append("image", newsImage);
+      formData.append("title", achievementForm.title);
+      formData.append("type", achievementForm.type);
+      formData.append("excerpt", achievementForm.excerpt);
+      formData.append("content", achievementForm.content);
+      formData.append("event_date", achievementForm.event_date);
+      formData.append("event_time", achievementForm.event_time);
+      formData.append("event_location", achievementForm.event_location);
+      formData.append("is_featured", achievementForm.is_featured.toString());
+      if (achievementImage) {
+        formData.append("image", achievementImage);
       }
 
-      if (editingNews) {
-        await newsAPI.update(editingNews.id, formData);
+      if (editingAchievement) {
+        await achievementsAPI.update(editingAchievement.id, formData);
       } else {
-        await newsAPI.create(formData);
+        await achievementsAPI.create(formData);
       }
 
-      setShowNewsModal(false);
-      fetchNews();
+      setshowAchievementModal(false);
+      fetchAchievements();
     } catch (error) {
       console.error("Failed to save news:", error);
     } finally {
-      setIsSavingNews(false);
+      setisSavingAchievement(false);
     }
   };
 
-  const handleDeleteNews = async (id: number) => {
+  const handleDeleteAchievement = async (id: number) => {
     if (!confirm("Are you sure you want to delete this news item?")) return;
     try {
-      await newsAPI.delete(id);
-      fetchNews();
+      await achievementsAPI.delete(id);
+      fetchAchievements();
     } catch (error) {
       console.error("Failed to delete news:", error);
     }
@@ -341,8 +341,8 @@ const AdminDashboard = () => {
 
   const handleToggleFeatured = async (id: number, currentStatus: boolean) => {
     try {
-      await newsAPI.toggleFeatured(id, !currentStatus);
-      fetchNews();
+      await achievementsAPI.toggleFeatured(id, !currentStatus);
+      fetchAchievements();
     } catch (error) {
       console.error("Failed to toggle featured:", error);
     }
@@ -497,15 +497,15 @@ const AdminDashboard = () => {
             Gallery
           </button>
           <button
-            onClick={() => setActiveTab("news")}
+            onClick={() => setActiveTab("achievements")}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
-              activeTab === "news"
+              activeTab === "achievements"
                 ? "bg-navy text-white shadow-lg"
                 : "bg-white text-navy hover:bg-pale-blue"
             }`}
           >
             <Newspaper className="h-5 w-5" />
-            News & Events
+            Achievements
           </button>
           <button
             onClick={() => setActiveTab("leadership")}
@@ -653,22 +653,22 @@ const AdminDashboard = () => {
         )}
 
         {/* News Tab */}
-        {activeTab === "news" && (
+        {activeTab === "achievements" && (
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-heading font-bold text-xl text-navy">News & Events ({newsItems.length})</h2>
-              <button onClick={() => openNewsModal()} className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark">
-                <Plus className="h-4 w-4" /> Add News/Event
+              <h2 className="font-heading font-bold text-xl text-navy">Achievements ({AchievementItems.length})</h2>
+              <button onClick={() => openAchievementModal()} className="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg hover:bg-navy-dark">
+                <Plus className="h-4 w-4" /> Add Achievement
               </button>
             </div>
 
-            {newsLoading ? (
+            {achievementsLoading ? (
               <div className="text-center py-12"><div className="w-8 h-8 border-4 border-navy/20 border-t-navy rounded-full animate-spin mx-auto"></div></div>
-            ) : newsItems.length === 0 ? (
+            ) : AchievementItems.length === 0 ? (
               <div className="text-center py-12"><Newspaper className="h-12 w-12 text-muted-foreground mx-auto mb-4" /><p className="text-muted-foreground">No news items yet</p></div>
             ) : (
               <div className="space-y-4">
-                {newsItems.map((item) => (
+                {AchievementItems.map((item) => (
                   <div key={item.id} className="flex gap-4 p-4 border border-border rounded-xl hover:border-navy/30 transition-colors">
                     {item.image_url && (
                       <img src={item.image_url} alt={item.title} className="w-32 h-24 object-cover rounded-lg flex-shrink-0" />
@@ -694,8 +694,8 @@ const AdminDashboard = () => {
                           <button onClick={() => handleToggleFeatured(item.id, item.is_featured)} className={`p-2 rounded-lg transition-colors ${item.is_featured ? "text-orange bg-orange/10" : "text-muted-foreground hover:bg-pale-gray"}`} title={item.is_featured ? "Remove from featured" : "Mark as featured"}>
                             {item.is_featured ? <Star className="h-4 w-4" /> : <StarOff className="h-4 w-4" />}
                           </button>
-                          <button onClick={() => openNewsModal(item)} className="p-2 text-sky-blue hover:bg-sky-blue/10 rounded-lg"><Edit className="h-4 w-4" /></button>
-                          <button onClick={() => handleDeleteNews(item.id)} className="p-2 text-red-accent hover:bg-red-accent/10 rounded-lg"><Trash2 className="h-4 w-4" /></button>
+                          <button onClick={() => openAchievementModal(item)} className="p-2 text-sky-blue hover:bg-sky-blue/10 rounded-lg"><Edit className="h-4 w-4" /></button>
+                          <button onClick={() => handleDeleteAchievement(item.id)} className="p-2 text-red-accent hover:bg-red-accent/10 rounded-lg"><Trash2 className="h-4 w-4" /></button>
                         </div>
                       </div>
                     </div>
@@ -794,66 +794,68 @@ const AdminDashboard = () => {
       )}
 
       {/* News Modal */}
-      {showNewsModal && (
+      {showAchievementModal && (
         <div className="fixed inset-0 bg-navy/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl p-6 w-full max-w-2xl my-8">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-heading font-bold text-xl text-navy">{editingNews ? "Edit News/Event" : "Add News/Event"}</h3>
-              <button onClick={() => setShowNewsModal(false)} className="p-2 hover:bg-pale-gray rounded-lg"><X className="h-5 w-5" /></button>
+              <h3 className="font-heading font-bold text-xl text-navy">{editingAchievement ? "Edit Achievement/Event" : "Add Achievement/Event"}</h3>
+              <button onClick={() => setshowAchievementModal(false)} className="p-2 hover:bg-pale-gray rounded-lg"><X className="h-5 w-5" /></button>
             </div>
-            <form onSubmit={handleSaveNews} className="space-y-4">
+            <form onSubmit={handleSaveAchievement} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-navy mb-2">Title *</label>
-                  <input type="text" value={newsForm.title} onChange={(e) => setNewsForm({ ...newsForm, title: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" required />
+                  <input type="text" value={achievementForm.title} onChange={(e) => setachievementForm({ ...achievementForm, title: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" required />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-navy mb-2">Type *</label>
-                  <select value={newsForm.type} onChange={(e) => setNewsForm({ ...newsForm, type: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg">
-                    <option value="News">News</option>
-                    <option value="Event">Event</option>
+                  <select
+                    value={achievementForm.type}
+                    onChange={(e) => setachievementForm({ ...achievementForm, type: e.target.value })}
+                    className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
+                    required
+                  >
                     <option value="Achievement">Achievement</option>
-                    <option value="Activity">Activity</option>
                   </select>
                 </div>
                 <div className="flex items-center gap-3">
-                  <input type="checkbox" id="featured" checked={newsForm.is_featured} onChange={(e) => setNewsForm({ ...newsForm, is_featured: e.target.checked })} className="w-5 h-5 rounded" />
+                  <input type="checkbox" id="featured" checked={achievementForm.is_featured} onChange={(e) => setachievementForm({ ...achievementForm, is_featured: e.target.checked })} className="w-5 h-5 rounded" />
                   <label htmlFor="featured" className="text-sm font-medium text-navy">Mark as Featured</label>
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-navy mb-2">Short Description *</label>
-                <textarea value={newsForm.excerpt} onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" rows={2} required />
+                <textarea value={achievementForm.excerpt} onChange={(e) => setachievementForm({ ...achievementForm, excerpt: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" rows={2} required />
               </div>
               <div>
                 <label className="block text-sm font-medium text-navy mb-2">Full Content</label>
-                <textarea value={newsForm.content} onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" rows={4} />
+                <textarea value={achievementForm.content} onChange={(e) => setachievementForm({ ...achievementForm, content: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" rows={4} />
               </div>
-              {newsForm.type === "Event" && (
+              {achievementForm.type === "Event" && (
                 <div className="grid grid-cols-3 gap-4 p-4 bg-pale-gray rounded-lg">
                   <div>
                     <label className="block text-sm font-medium text-navy mb-2">Event Date</label>
-                    <input type="date" value={newsForm.event_date} onChange={(e) => setNewsForm({ ...newsForm, event_date: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" />
+                    <input type="date" value={achievementForm.event_date} onChange={(e) => setachievementForm({ ...achievementForm, event_date: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-navy mb-2">Event Time</label>
-                    <input type="time" value={newsForm.event_time} onChange={(e) => setNewsForm({ ...newsForm, event_time: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" />
+                    <input type="time" value={achievementForm.event_time} onChange={(e) => setachievementForm({ ...achievementForm, event_time: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-navy mb-2">Location</label>
-                    <input type="text" value={newsForm.event_location} onChange={(e) => setNewsForm({ ...newsForm, event_location: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" placeholder="e.g. Main Hall" />
+                    <input type="text" value={achievementForm.event_location} onChange={(e) => setachievementForm({ ...achievementForm, event_location: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" placeholder="e.g. Main Hall" />
                   </div>
                 </div>
               )}
               <div>
-                <label className="block text-sm font-medium text-navy mb-2">Image {!editingNews && "(Optional)"}</label>
-                <input type="file" accept="image/*" onChange={(e) => setNewsImage(e.target.files?.[0] || null)} className="w-full px-4 py-2 border border-border rounded-lg" />
-                {(newsImage || editingNews?.image_url) && (
-                  <img src={newsImage ? URL.createObjectURL(newsImage) : editingNews?.image_url} alt="Preview" className="w-full h-40 object-cover rounded-lg mt-2" />
+                <label className="block text-sm font-medium text-navy mb-2">Image {!editingAchievement && "(Optional)"}</label>
+                <input type="file" accept="image/*" onChange={(e) => setachievementImage(e.target.files?.[0] || null)} className="w-full px-4 py-2 border border-border rounded-lg" />
+                {(achievementImage || editingAchievement?.image_url) && (
+                  <img src={achievementImage ? URL.createObjectURL(achievementImage) : editingAchievement?.image_url} alt="Preview" className="w-full h-40 object-cover rounded-lg mt-2" />
                 )}
               </div>
-              <button type="submit" disabled={isSavingNews} className="w-full bg-navy text-white py-3 rounded-lg font-medium hover:bg-navy-dark disabled:opacity-50 flex items-center justify-center gap-2">
-                {isSavingNews ? <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Saving...</> : editingNews ? "Update News/Event" : "Create News/Event"}
+              <button type="submit" disabled={isSavingAchievement} className="w-full bg-navy text-white py-3 rounded-lg font-medium hover:bg-navy-dark disabled:opacity-50 flex items-center justify-center gap-2">
+                {isSavingAchievement ? <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Saving...</> : editingAchievement ? "Update News/Event" : "Create News/Event"}
               </button>
             </form>
           </div>
