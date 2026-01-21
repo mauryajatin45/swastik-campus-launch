@@ -124,9 +124,6 @@ const AdminDashboard = () => {
     type: "Achievement",
     excerpt: "",
     content: "",
-    event_date: "",
-    event_time: "",
-    event_location: "",
     is_featured: false,
   });
   const [achievementImage, setachievementImage] = useState<File | null>(null);
@@ -306,9 +303,6 @@ const AdminDashboard = () => {
       formData.append("type", achievementForm.type);
       formData.append("excerpt", achievementForm.excerpt);
       formData.append("content", achievementForm.content);
-      formData.append("event_date", achievementForm.event_date);
-      formData.append("event_time", achievementForm.event_time);
-      formData.append("event_location", achievementForm.event_location);
       formData.append("is_featured", achievementForm.is_featured.toString());
       if (achievementImage) {
         formData.append("image", achievementImage);
