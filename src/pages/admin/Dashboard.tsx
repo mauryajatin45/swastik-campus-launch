@@ -322,8 +322,10 @@ const AdminDashboard = () => {
 
       setshowAchievementModal(false);
       fetchAchievements();
-    } catch (error) {
-      console.error("Failed to save news:", error);
+    } catch (error: any) {
+      console.error("Failed to save achievement:", error);
+      console.error("Error response:", error.response?.data);
+      alert(`Failed to save achievement: ${error.response?.data?.details || error.response?.data?.error || error.message}`);
     } finally {
       setisSavingAchievement(false);
     }
