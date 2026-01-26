@@ -71,12 +71,11 @@ interface AchievementItem {
   type: string;
   excerpt: string;
   content: string;
-  image_url: string;
-  event_date: string | null;
-  event_time: string | null;
-  event_location: string | null;
+  image_url: string | null;
+  public_id: string | null;
   is_featured: boolean;
   created_at: string;
+  updated_at: string;
 }
 
 interface LeadershipMember {
@@ -272,21 +271,15 @@ const AdminDashboard = () => {
         type: news.type,
         excerpt: news.excerpt,
         content: news.content || "",
-        event_date: news.event_date || "",
-        event_time: news.event_time || "",
-        event_location: news.event_location || "",
         is_featured: news.is_featured,
       });
     } else {
       seteditingAchievement(null);
       setachievementForm({
         title: "",
-        type: "achievements",
+        type: "Achievement",
         excerpt: "",
         content: "",
-        event_date: "",
-        event_time: "",
-        event_location: "",
         is_featured: false,
       });
     }
@@ -678,13 +671,6 @@ const AdminDashboard = () => {
                           </div>
                           <h3 className="font-heading font-bold text-navy">{item.title}</h3>
                           <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{item.excerpt}</p>
-                          {item.type === "Event" && item.event_date && (
-                            <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                              <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {item.event_date}</span>
-                              {item.event_time && <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {item.event_time}</span>}
-                              {item.event_location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {item.event_location}</span>}
-                            </div>
-                          )}
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
                           <button onClick={() => handleToggleFeatured(item.id, item.is_featured)} className={`p-2 rounded-lg transition-colors ${item.is_featured ? "text-orange bg-orange/10" : "text-muted-foreground hover:bg-pale-gray"}`} title={item.is_featured ? "Remove from featured" : "Mark as featured"}>
@@ -789,10 +775,10 @@ const AdminDashboard = () => {
         </div>
       )}
 
-      {/* News Modal */}
+      {/* Achievement Modal */}
       {showAchievementModal && (
-        <div className="fixed inset-0 bg-navy/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-2xl my-8">
+        <div className="fixed inset-0 bg-navy/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto my-8">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-heading font-bold text-xl text-navy">{editingAchievement ? "Edit Achievement/Event" : "Add Achievement/Event"}</h3>
               <button onClick={() => setshowAchievementModal(false)} className="p-2 hover:bg-pale-gray rounded-lg"><X className="h-5 w-5" /></button>
@@ -827,22 +813,6 @@ const AdminDashboard = () => {
                 <label className="block text-sm font-medium text-navy mb-2">Full Content</label>
                 <textarea value={achievementForm.content} onChange={(e) => setachievementForm({ ...achievementForm, content: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" rows={4} />
               </div>
-              {achievementForm.type === "Event" && (
-                <div className="grid grid-cols-3 gap-4 p-4 bg-pale-gray rounded-lg">
-                  <div>
-                    <label className="block text-sm font-medium text-navy mb-2">Event Date</label>
-                    <input type="date" value={achievementForm.event_date} onChange={(e) => setachievementForm({ ...achievementForm, event_date: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-navy mb-2">Event Time</label>
-                    <input type="time" value={achievementForm.event_time} onChange={(e) => setachievementForm({ ...achievementForm, event_time: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-navy mb-2">Location</label>
-                    <input type="text" value={achievementForm.event_location} onChange={(e) => setachievementForm({ ...achievementForm, event_location: e.target.value })} className="w-full px-4 py-2 border border-border rounded-lg" placeholder="e.g. Main Hall" />
-                  </div>
-                </div>
-              )}
               <div>
                 <label className="block text-sm font-medium text-navy mb-2">Image {!editingAchievement && "(Optional)"}</label>
                 <input type="file" accept="image/*" onChange={(e) => setachievementImage(e.target.files?.[0] || null)} className="w-full px-4 py-2 border border-border rounded-lg" />
@@ -851,7 +821,7 @@ const AdminDashboard = () => {
                 )}
               </div>
               <button type="submit" disabled={isSavingAchievement} className="w-full bg-navy text-white py-3 rounded-lg font-medium hover:bg-navy-dark disabled:opacity-50 flex items-center justify-center gap-2">
-                {isSavingAchievement ? <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Saving...</> : editingAchievement ? "Update News/Event" : "Create News/Event"}
+                {isSavingAchievement ? <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Saving...</> : editingAchievement ? "Update Achievement" : "Add Achievement"}
               </button>
             </form>
           </div>
