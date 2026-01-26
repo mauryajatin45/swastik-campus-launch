@@ -77,20 +77,44 @@ const Contact = () => {
 
   const isAdmissionReady = formData.inquiryType === "admission" && formData.medium;
 
+  const sendEmail = async (data: any) => {
+    try {
+      await fetch("https://formsubmit.co/ajax/swastikmotera@gmail.com", {
+        method: "POST",
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `New Inquiry: ${data.name}`,
+          _template: "table",
+          ...data
+        })
+      });
+    } catch (error) {
+      console.error("Email submission failed:", error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // If admission inquiry with medium selected, save data then redirect to admission form
     if (isAdmissionReady) {
       try {
-        // First, save the inquiry to database
-        await enquiryAPI.submit({
+        const submissionData = {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           inquiry_type: `Admission - ${formData.medium === 'english' ? 'English Medium' : 'Gujarati Medium'}`,
           message: `Admission inquiry - Preferred Medium: ${formData.medium}`,
-        });
+        };
+
+        // Submit to Backend
+        await enquiryAPI.submit(submissionData);
+        
+        // Send Email (Non-blocking for redirection, but attempted)
+        sendEmail(submissionData);
         
         // Then redirect to admission form with data
         const params = new URLSearchParams({
@@ -113,13 +137,19 @@ const Contact = () => {
     
     // Otherwise, submit as regular contact message
     try {
-      await enquiryAPI.submit({
+      const submissionData = {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         inquiry_type: formData.inquiryType,
         message: formData.message,
-      });
+      };
+
+      // Submit to Backend
+      await enquiryAPI.submit(submissionData);
+
+      // Send Email
+      await sendEmail(submissionData);
       
       toast({
         title: "Message Sent!",
@@ -132,7 +162,7 @@ const Contact = () => {
         title: "Error",
         description: "Failed to send message. Please try again.",
         variant: "destructive",
-      });
+        });
     }
   };
 
