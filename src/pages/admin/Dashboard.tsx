@@ -91,7 +91,7 @@ interface LeadershipMember {
 const AdminDashboard = () => {
   const { admin, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"enquiries" | "gallery" | "achievements" | "leadership">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "admission_enquiries" | "gallery" | "achievements" | "leadership">("admission_enquiries");
 
   // Enquiry states
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
@@ -143,7 +143,7 @@ const AdminDashboard = () => {
   const [isSavingMember, setIsSavingMember] = useState(false);
 
   useEffect(() => {
-    if (activeTab === "enquiries") {
+    if (activeTab === "enquiries" || activeTab === "admission_enquiries") {
       fetchEnquiries();
     } else if (activeTab === "gallery") {
       fetchGallery();
@@ -434,12 +434,26 @@ const AdminDashboard = () => {
     }
   };
 
-  const filteredEnquiries = enquiries.filter(
-    (e) =>
+  const filteredEnquiries = enquiries.filter((e) => {
+    // 1. Filter by Search Term
+    const matchesSearch = 
       e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       e.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      e.phone.includes(searchTerm)
-  );
+      e.phone.includes(searchTerm);
+
+    if (!matchesSearch) return false;
+
+    // 2. Filter by Tab Type (General vs Admission)
+    if (activeTab === "admission_enquiries") {
+      // Show ONLY admission and admission-* types
+      return e.inquiry_type && e.inquiry_type.toLowerCase().startsWith("admission");
+    } else if (activeTab === "enquiries") {
+      // Show everything ELSE (Contact, Quick Enquiry, etc.)
+      return !e.inquiry_type || !e.inquiry_type.toLowerCase().startsWith("admission");
+    }
+    
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-pale-gray">
@@ -464,6 +478,17 @@ const AdminDashboard = () => {
         {/* Tab Navigation */}
         <div className="flex flex-wrap gap-4 mb-6">
           <button
+            onClick={() => setActiveTab("admission_enquiries")}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+              activeTab === "admission_enquiries"
+                ? "bg-navy text-white shadow-lg"
+                : "bg-white text-navy hover:bg-pale-blue"
+            }`}
+          >
+            <GraduationCap className="h-5 w-5" />
+            Admission Enquiries
+          </button>
+          <button
             onClick={() => setActiveTab("enquiries")}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
               activeTab === "enquiries"
@@ -472,7 +497,7 @@ const AdminDashboard = () => {
             }`}
           >
             <MessageSquare className="h-5 w-5" />
-            Enquiries
+            General Enquiries
           </button>
           <button
             onClick={() => setActiveTab("gallery")}
@@ -509,8 +534,8 @@ const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* Enquiries Tab */}
-        {activeTab === "enquiries" && (
+        {/* Enquiries Tabs (Shared Filters, Different Tables) */}
+        {(activeTab === "enquiries" || activeTab === "admission_enquiries") && (
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <div className="flex flex-wrap gap-4 mb-6">
               <div className="flex-1 min-w-[200px]">
@@ -555,11 +580,18 @@ const AdminDashboard = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="text-left py-3 px-4 font-medium text-navy">Name</th>
+                      <th className="text-left py-3 px-4 font-medium text-navy">Ref No</th>
+                      {activeTab === "admission_enquiries" ? (
+                        <>
+                           <th className="text-left py-3 px-4 font-medium text-navy">Student Info</th>
+                           <th className="text-left py-3 px-4 font-medium text-navy">Grade/Medium</th>
+                        </>
+                      ) : (
+                        <th className="text-left py-3 px-4 font-medium text-navy">Name</th>
+                      )}
                       <th className="text-left py-3 px-4 font-medium text-navy">Contact</th>
-                      <th className="text-left py-3 px-4 font-medium text-navy">Type</th>
-                      <th className="text-left py-3 px-4 font-medium text-navy">Medium</th>
-                      <th className="text-left py-3 px-4 font-medium text-navy">Message</th>
+                      {activeTab !== "admission_enquiries" && <th className="text-left py-3 px-4 font-medium text-navy">Type</th>}
+                      {activeTab !== "admission_enquiries" && <th className="text-left py-3 px-4 font-medium text-navy">Message</th>}
                       <th className="text-left py-3 px-4 font-medium text-navy">Status</th>
                       <th className="text-left py-3 px-4 font-medium text-navy">Date</th>
                       <th className="text-left py-3 px-4 font-medium text-navy">Actions</th>
@@ -575,19 +607,40 @@ const AdminDashboard = () => {
                         }}
                         className="border-b border-border hover:bg-pale-gray/50 cursor-pointer transition-colors"
                       >
-                        <td className="py-3 px-4 font-medium">{enquiry.name}</td>
-                        <td className="py-3 px-4"><div className="text-sm"><p>{enquiry.email}</p><p className="text-muted-foreground">{enquiry.phone}</p></div></td>
-                        <td className="py-3 px-4 capitalize">{enquiry.inquiry_type}</td>
+                         <td className="py-3 px-4 text-sm text-muted-foreground">#{enquiry.id}</td>
+                        {activeTab === "admission_enquiries" ? (
+                           <>
+                            <td className="py-3 px-4">
+                              <div className="text-sm font-medium text-navy">{enquiry.student_name || "N/A"}</div>
+                              <div className="text-xs text-muted-foreground">{enquiry.date_of_birth ? `DOB: ${new Date(enquiry.date_of_birth).toLocaleDateString()}` : ""}</div>
+                            </td>
+                            <td className="py-3 px-4">
+                              <div className="text-sm font-medium">{enquiry.admission_standard || "-"}</div>
+                              {enquiry.medium && (
+                                <span className={`inline-block px-2 py-0.5 mt-1 rounded-full text-xs ${enquiry.medium === 'english' ? 'bg-indigo-100 text-indigo-700' : 'bg-orange/10 text-orange'}`}>
+                                  {enquiry.medium}
+                                </span>
+                              )}
+                            </td>
+                           </>
+                        ) : (
+                          <td className="py-3 px-4 font-medium">{enquiry.name}</td>
+                        )}
+                        
                         <td className="py-3 px-4">
-                          {enquiry.medium ? (
-                            <span className="px-2 py-1 bg-sky-blue/10 text-sky-blue rounded-full text-xs font-medium capitalize">
-                              {enquiry.medium}
-                            </span>
-                          ) : (
-                            <span className="text-muted-foreground text-xs">-</span>
-                          )}
+                          <div className="text-sm">
+                            <p className="font-medium text-navy">{activeTab === "admission_enquiries" ? enquiry.name : ""}</p>
+                            <p className="text-muted-foreground">{enquiry.phone}</p>
+                            {enquiry.email && <p className="text-xs text-muted-foreground">{enquiry.email}</p>}
+                          </div>
                         </td>
-                        <td className="py-3 px-4"><p className="max-w-[200px] truncate text-sm text-muted-foreground">{enquiry.message || "-"}</p></td>
+
+                        {activeTab !== "admission_enquiries" && <td className="py-3 px-4 capitalize">{enquiry.inquiry_type}</td>}
+                        
+                        {activeTab !== "admission_enquiries" && (
+                          <td className="py-3 px-4"><p className="max-w-[200px] truncate text-sm text-muted-foreground">{enquiry.message || "-"}</p></td>
+                        )}
+
                         <td className="py-3 px-4" onClick={(e) => e.stopPropagation()}>
                           <select value={enquiry.status} onChange={(e) => handleStatusChange(enquiry.id, e.target.value)} className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(enquiry.status)} border-0 cursor-pointer`}>
                             <option value="new">New</option>

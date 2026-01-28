@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { enquiryAPI } from "@/services/api";
 import {
   FileText,
   Calendar,
@@ -122,7 +124,53 @@ const faqs = [
 ];
 
 const Admissions = () => {
+  const { toast } = useToast();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    grade: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (!formData.name || !formData.phone || !formData.grade) {
+        toast({
+          title: "Error",
+          description: "Please fill in all fields",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      await enquiryAPI.submit({
+        name: formData.name,
+        email: "", // Empty string or omit, backend now accepts null/empty
+        phone: formData.phone,
+        inquiry_type: "Quick Enquiry",
+        message: `Requested Grade: ${formData.grade}`,
+      });
+
+      toast({
+        title: "Enquiry Submitted",
+        description: "We will get back to you soon!",
+      });
+      
+      setFormData({ name: "", phone: "", grade: "" });
+    } catch (error) {
+      console.error("Error submitting quick enquiry:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit enquiry. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <main className="overflow-hidden">
@@ -170,11 +218,14 @@ const Admissions = () => {
                   Quick Enquiry
                 </h3>
                 <p className="text-muted-foreground text-sm mb-6">Fill in your details and we'll get back to you</p>
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-navy mb-1">Parent's Name *</label>
                     <input
                       type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       placeholder="Enter your name"
                       className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all"
                     />
@@ -183,13 +234,21 @@ const Admissions = () => {
                     <label className="block text-sm font-medium text-navy mb-1">Mobile Number *</label>
                     <input
                       type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
                       placeholder="Enter mobile number"
                       className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-navy mb-1">Select Grade *</label>
-                    <select className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all cursor-pointer">
+                    <select
+                      name="grade"
+                      value={formData.grade}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl bg-pale-gray border border-border text-navy focus:outline-none focus:ring-2 focus:ring-orange/50 focus:border-orange transition-all cursor-pointer"
+                    >
                       <option value="">Choose a grade</option>
                       <option value="nursery">Nursery</option>
                       <option value="lkg">LKG</option>
