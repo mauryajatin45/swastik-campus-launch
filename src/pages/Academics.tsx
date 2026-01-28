@@ -115,7 +115,7 @@ const levels = [
       "Birth Certificate and its Xerox",
       "Child Passport Size Photo",
       "Aadhaar Card Xerox",
-      "Leaving Certificate of Last School and ID Number",
+      "Living Certificate of Last School",
     ],
   },
   {

@@ -105,7 +105,7 @@ const About = () => {
     { year: "2011", title: "Swastik Kidz – Branch 1", description: "First pre-school branch opened at Tejendra, Vastral, Bors Road, expanding our reach to nurture young minds from early years." },
     { year: "2012", title: "Noble Education Campus", description: "Established at Kathwada Road, strengthening our commitment to quality education across Ahmedabad." },
     { year: "2016", title: "Swastik Kidz – Branch 2", description: "Second pre-school branch at Madhav Bagh, Vastral, Bors Road, serving more families in the community." },
-    { year: "2018", title: "Swastik Education Campus", description: "New campus opened at Bapunagar, Chawk, Nava Naroda, another milestone in our expansion." },
+    { year: "2018", title: "Swastik Education Campus", description: "New campus opened at Bapasitaram Chawk, Nava Naroda, another milestone in our expansion." },
     { year: "2021", title: "Swastik Kidz – Branch 3", description: "Third pre-school branch at Pushp Villa, Vastral, continuing our mission of early childhood excellence." },
     { year: "2025", title: "Swastik Kidz – Branch 4", description: "Fourth pre-school branch opened at Pushpak, Viratnagar, expanding our reach to nurture more young learners." },
     { year: "2025", title: "Swastik Kidz – Branch 5", description: "Fifth pre-school branch at Amarjyot, Viratnagar, completing our network of 8 institutions across Ahmedabad." },
@@ -254,7 +254,7 @@ const About = () => {
                     </div>
                     <div className="flex items-start gap-3">
                       <span className="font-bold text-sky-blue">2018:</span>
-                      <span className="text-muted-foreground">Swastik Education Campus, Bapunagar, Nava Naroda</span>
+                      <span className="text-muted-foreground">Swastik Education Campus, Bapasitaram Chawk, Nava Naroda</span>
                     </div>
                     <div className="flex items-start gap-3">
                       <span className="font-bold text-sky-blue">2021:</span>
