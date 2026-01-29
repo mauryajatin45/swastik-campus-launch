@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { leadershipAPI } from "@/services/api";
 import {
   Quote,
   GraduationCap,
@@ -125,11 +126,8 @@ const About = () => {
   useEffect(() => {
     const fetchLeadership = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/leadership');
-        if (response.ok) {
-          const data = await response.json();
-          setLeadership(data);
-        }
+        const response = await leadershipAPI.getAll();
+        setLeadership(response.data);
       } catch (error) {
         console.error('Error fetching leadership:', error);
       } finally {
